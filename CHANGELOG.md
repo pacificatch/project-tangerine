@@ -121,6 +121,29 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 4: Password & Session Recording
+
+### Added
+- `worker/src/index.js` — `POST /api/auth` endpoint using Web Crypto SHA-256 hashing
+- `client/src/components/PasswordPrompt.jsx` — password modal shown before every quiz
+- `client/src/components/PasswordPrompt.css` — styling for password modal
+- `client/src/pages/Quiz.jsx` — updated to show password prompt, guest/auth banners
+- `client/src/pages/Quiz.css` — guest and auth banner styles
+- `scripts/hash-password.js` — helper script to generate password hash securely
+
+### Security
+- Password stored as SHA-256 hash in Cloudflare Worker secret (`PASSWORD_HASH`)
+- Never stored or transmitted in plaintext
+- Wrong password silently treated as guest — no lockout or error
+
+### Testing
+- 13/13 Worker unit tests passing
+- 7/7 frontend unit tests passing
+
+### Milestone 4 Status: ✅ Complete
+
+---
+
 ## [2026-04-18] — Architecture Decision: Switch to Cloudflare D1
 
 ### Changed

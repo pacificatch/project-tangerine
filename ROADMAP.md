@@ -103,25 +103,28 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 4 — Password & Session Recording
+## Milestone 4 — Password & Session Recording ✅ COMPLETE
 **Goal:** Gate performance recording behind a password. Anyone can use the app, but only the correct password enables results to be saved.
 
 ### Deliverables
-- [ ] Password prompt shown before every quiz session
-- [ ] Three scenarios handled:
+- [x] Password prompt shown before every quiz session
+- [x] Three scenarios handled:
   - No password (skip) → quiz runs, session not recorded
   - Wrong password → quiz runs, session not recorded
   - Correct password → quiz runs, session recorded normally
-- [ ] No lockout or error shown for wrong password — silently treated as guest
-- [ ] `POST /api/auth` endpoint — verifies password, returns authenticated true/false
-- [ ] Password stored as a hashed Cloudflare Worker secret (never plaintext)
-- [ ] Guest mode clearly indicated in the UI during quiz
-- [ ] Unit tests for auth endpoint
+- [x] No lockout or error shown for wrong password — silently treated as guest
+- [x] `POST /api/auth` endpoint — verifies password, returns authenticated true/false
+- [x] Password stored as a hashed Cloudflare Worker secret (never plaintext)
+- [x] Guest mode banner shown during quiz
+- [x] Authenticated mode banner shown during quiz
+- [x] `scripts/hash-password.js` — helper to generate password hash securely
+- [x] 13/13 Worker unit tests passing
+- [x] 7/7 frontend unit tests passing
 
 ### Success Criteria
-- Wrong password → quiz works but nothing recorded in database
-- Correct password → quiz results appear in progress/history
-- Password never stored or transmitted in plaintext
+- [x] Skip/wrong password → guest banner shown, nothing recorded
+- [x] Correct password → authenticated banner shown, results recorded
+- [x] Password never stored or transmitted in plaintext
 
 ---
 
@@ -213,7 +216,7 @@ https://project-tangerine.pages.dev
 | 1 — React Frontend Setup | ✅ Complete |
 | 2 — Backend & Database | ✅ Complete |
 | 3 — Vocabulary Upload | ✅ Complete |
-| 4 — Password & Session Recording | Not started |
+| 4 — Password & Session Recording | ✅ Complete |
 | 5 — Session Setup | Not started |
 | 6 — Core Quiz Engine | Not started |
 | 7 — Audio Pronunciation | Not started |

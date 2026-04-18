@@ -82,16 +82,43 @@ If any test fails, the deploy is blocked — broken code never goes live.
 - [ ] Click **Import** and confirm the success screen shows inserted count
 - [ ] Upload the same file again — confirm skipped count equals total rows (duplicate protection works)
 
-### Milestone 4 — Session Setup (coming soon)
+### Milestone 4 — Password & Session Recording
+
+#### How to change your password
+1. Generate a new hash — run this and type your new password when prompted:
+```bash
+node ~/projects/project-tangerine/scripts/hash-password.js
+```
+2. Copy the hash it outputs, then set it as the Cloudflare secret:
+```bash
+cd ~/projects/project-tangerine/worker && wrangler secret put PASSWORD_HASH
+```
+3. Paste the hash when prompted. This overwrites the old password immediately.
+
+#### Fixing an accidental secret
+If you accidentally set the wrong value as a secret name, delete it with:
+```bash
+cd ~/projects/project-tangerine/worker && wrangler secret delete <accidental-secret-name>
+```
+
+#### Testing the password flow
+- [ ] Open the app and start a quiz session
+- [ ] Skip the password prompt — confirm guest mode indicator is shown
+- [ ] Enter a wrong password — confirm guest mode indicator is shown, no error or lockout
+- [ ] Enter the correct password — confirm authenticated mode, results recorded
+- [ ] Complete a guest session — confirm nothing appears in progress/history
+- [ ] Complete an authenticated session — confirm results appear in progress/history
+
+### Milestone 5 — Session Setup (coming soon)
 - [ ] To be added
 
-### Milestone 5 — Quiz Engine (coming soon)
+### Milestone 6 — Quiz Engine (coming soon)
 - [ ] To be added
 
-### Milestone 6 — Audio (coming soon)
+### Milestone 7 — Audio (coming soon)
 - [ ] To be added
 
-### Milestone 7 — Dashboard & Progress (coming soon)
+### Milestone 8 — Dashboard & Progress (coming soon)
 - [ ] To be added
 
 ---

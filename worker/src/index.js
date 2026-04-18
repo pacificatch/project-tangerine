@@ -11,6 +11,14 @@ function json(data, status = 200) {
   });
 }
 
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -24,6 +32,19 @@ export default {
     // GET /api/health
     if (pathname === '/api/health' && request.method === 'GET') {
       return json({ status: 'ok', message: 'Tangerine API is running' });
+    }
+
+    // POST /api/auth
+    if (pathname === '/api/auth' && request.method === 'POST') {
+      const { password } = await request.json();
+
+      if (!password || !env.PASSWORD_HASH) {
+        return json({ authenticated: false });
+      }
+
+      const hash = await hashPassword(password);
+      const authenticated = hash === env.PASSWORD_HASH;
+      return json({ authenticated });
     }
 
     // GET /api/vocabulary
@@ -66,7 +87,6 @@ export default {
           continue;
         }
 
-        // Check for duplicate (same traditional + level + lesson)
         const existing = await env.tangerine_db
           .prepare('SELECT id FROM vocabulary WHERE traditional = ? AND level = ? AND lesson = ?')
           .bind(traditional, level, lesson)

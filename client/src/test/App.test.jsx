@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import App from '../App';
 
 describe('App', () => {
@@ -21,16 +21,25 @@ describe('App', () => {
     expect(screen.getByText('Your progress and stats will appear here.')).toBeInTheDocument();
   });
 
-  it('navigates to Quiz page', async () => {
+  it('shows password prompt when navigating to Quiz page', async () => {
     render(<App />);
     await userEvent.click(screen.getByRole('link', { name: 'Quiz' }));
-    expect(screen.getByText('Your quiz session will appear here.')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to Tangerine')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Enter password')).toBeInTheDocument();
+    expect(screen.getByText(/Skip/)).toBeInTheDocument();
+  });
+
+  it('shows guest banner when skipping password', async () => {
+    render(<App />);
+    await userEvent.click(screen.getByRole('link', { name: 'Quiz' }));
+    await userEvent.click(screen.getByText(/Skip/));
+    expect(screen.getByText(/Guest mode — answers are not being recorded/)).toBeInTheDocument();
   });
 
   it('navigates to Upload page', async () => {
     render(<App />);
     await userEvent.click(screen.getByRole('link', { name: 'Upload' }));
-    expect(screen.getByText('Upload your CSV or Excel vocabulary file here.')).toBeInTheDocument();
+    expect(screen.getByText('Upload Vocabulary')).toBeInTheDocument();
   });
 
   it('renders footer with Chinese characters', () => {

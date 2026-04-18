@@ -1,0 +1,27 @@
+.quiz-page {
+  max-width: 860px;
+}
+
+.quiz-page h2 {
+  margin-bottom: 0.5rem;
+}
+
+.guest-banner {
+  background: #fff3cd;
+  border: 1px solid #e0a800;
+  color: #856404;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-banner {
+  background: #f0faf0;
+  border: 1px solid #4a7c3f;
+  color: #2d5a27;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}

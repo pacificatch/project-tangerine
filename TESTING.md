@@ -117,6 +117,30 @@ None — no application logic in Milestone 0.
 
 ---
 
+## Milestone 4 — Password & Session Recording
+
+### Manual Tests
+| Test | Method | Result |
+|------|--------|--------|
+| Password prompt appears on Quiz page | Navigate to /quiz | 🔲 Pending user test |
+| Skip shows guest banner | Click skip | 🔲 Pending user test |
+| Wrong password shows guest banner | Enter wrong password | 🔲 Pending user test |
+| Correct password shows auth banner | Enter correct password | 🔲 Pending user test |
+
+### Automated Tests
+| Test | Framework | Status |
+|------|-----------|--------|
+| POST /api/auth returns false for empty password | Vitest | ✅ Pass |
+| POST /api/auth returns false for wrong password | Vitest | ✅ Pass |
+| POST /api/auth returns false when secret not set | Vitest | ✅ Pass |
+| Password prompt renders on Quiz page | React Testing Library | ✅ Pass |
+| Skip button shows guest banner | React Testing Library | ✅ Pass |
+
+**Worker result: 13/13 tests passed** — `worker/src/test/worker.test.js`
+**Frontend result: 7/7 tests passed** — `client/src/test/App.test.jsx`
+
+---
+
 ## Legend
 | Symbol | Meaning |
 |--------|---------|

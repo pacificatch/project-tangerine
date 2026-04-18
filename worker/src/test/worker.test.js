@@ -52,6 +52,37 @@ describe('Worker API', () => {
     });
   });
 
+  describe('POST /api/auth', () => {
+    it('returns authenticated false when no password provided', async () => {
+      const response = await worker.fetch(
+        makeRequest('/api/auth', 'POST', { password: '' }),
+        { ...env, PASSWORD_HASH: 'abc123' }
+      );
+      const data = await response.json();
+      expect(response.status).toBe(200);
+      expect(data.authenticated).toBe(false);
+    });
+
+    it('returns authenticated false for wrong password', async () => {
+      // SHA-256 of 'correctpassword'
+      const response = await worker.fetch(
+        makeRequest('/api/auth', 'POST', { password: 'wrongpassword' }),
+        { ...env, PASSWORD_HASH: 'correcthash' }
+      );
+      const data = await response.json();
+      expect(data.authenticated).toBe(false);
+    });
+
+    it('returns authenticated false when PASSWORD_HASH secret not set', async () => {
+      const response = await worker.fetch(
+        makeRequest('/api/auth', 'POST', { password: 'anypassword' }),
+        { ...env, PASSWORD_HASH: undefined }
+      );
+      const data = await response.json();
+      expect(data.authenticated).toBe(false);
+    });
+  });
+
   describe('GET /api/vocabulary', () => {
     it('returns vocabulary list', async () => {
       const response = await worker.fetch(makeRequest('/api/vocabulary'), env);
