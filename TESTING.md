@@ -71,6 +71,29 @@ None — no application logic in Milestone 0.
 
 ---
 
+## Milestone 2 — Backend & Database Foundation
+
+### Manual Tests
+| Test | Method | Result |
+|------|--------|--------|
+| Health check endpoint live | `curl https://tangerine-worker.pacificatch.workers.dev/api/health` | ✅ Pass |
+| Returns `{ status: "ok" }` | Visual check of response | ✅ Pass |
+
+### Automated Tests
+| Test | Framework | Status |
+|------|-----------|--------|
+| GET /api/health returns 200 and status ok | Vitest | ✅ Pass |
+| OPTIONS preflight returns 200 with CORS headers | Vitest | ✅ Pass |
+| GET /api/vocabulary returns array | Vitest | ✅ Pass |
+| POST /api/session/start returns sessionId | Vitest | ✅ Pass |
+| POST /api/session/answer returns success | Vitest | ✅ Pass |
+| GET /api/dashboard returns stats object | Vitest | ✅ Pass |
+| Unknown route returns 404 | Vitest | ✅ Pass |
+
+**Result: 7/7 tests passed** — `worker/src/test/worker.test.js`
+
+---
+
 ## Legend
 | Symbol | Meaning |
 |--------|---------|

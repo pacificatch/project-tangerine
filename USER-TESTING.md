@@ -71,8 +71,9 @@ If any test fails, the deploy is blocked — broken code never goes live.
 - [ ] Layout looks correct on mobile (no overflow, no broken layout)
 - [ ] Open `https://project-tangerine.pages.dev` — live site reflects latest changes
 
-### Milestone 2 — Backend & Database (coming soon)
-- [ ] To be added
+### Milestone 2 — Backend & Database
+- [ ] Open https://tangerine-worker.pacificatch.workers.dev/api/health in browser — should show `{"status":"ok","message":"Tangerine API is running"}`
+- [ ] Confirm no errors in the response
 
 ### Milestone 3 — Vocabulary Upload (coming soon)
 - [ ] To be added

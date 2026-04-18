@@ -1,0 +1,8 @@
+name = "tangerine-worker"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "tangerine_db"
+database_name = "tangerine-db"
+database_id = "74a15efa-5c0a-483d-8fd7-456b9804f153"

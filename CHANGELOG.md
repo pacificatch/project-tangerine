@@ -73,6 +73,35 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 2: Backend & Database Foundation
+
+### Added
+- `worker/wrangler.toml` — Cloudflare Worker configuration, D1 database binding
+- `worker/schema.sql` — Database schema (vocabulary, sessions, answers tables)
+- `worker/src/index.js` — Cloudflare Worker with API endpoints:
+  - `GET /api/health`
+  - `GET /api/vocabulary`
+  - `POST /api/session/start`
+  - `POST /api/session/answer`
+  - `GET /api/dashboard`
+- `worker/src/test/worker.test.js` — 7 unit tests for all API endpoints
+
+### Infrastructure
+- Cloudflare D1 database created: `tangerine-db`
+- Schema applied to live D1 database (3 tables)
+- Worker deployed to Cloudflare Workers
+
+### Testing
+- 7/7 unit tests passed (Vitest)
+
+### Live URLs
+- Worker API: https://tangerine-worker.pacificatch.workers.dev
+- Health check: https://tangerine-worker.pacificatch.workers.dev/api/health
+
+### Milestone 2 Status: ✅ Complete
+
+---
+
 ## [2026-04-18] — Architecture Decision: Switch to Cloudflare D1
 
 ### Changed

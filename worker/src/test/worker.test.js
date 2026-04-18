@@ -1,0 +1,112 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import worker from '../index.js';
+
+// Mock D1 database
+function mockDb(overrides = {}) {
+  return {
+    prepare: vi.fn().mockReturnValue({
+      bind: vi.fn().mockReturnValue({
+        all: vi.fn().mockResolvedValue({ results: [] }),
+        run: vi.fn().mockResolvedValue({ meta: { last_row_id: 1 } }),
+        first: vi.fn().mockResolvedValue({ count: 0 }),
+      }),
+      all: vi.fn().mockResolvedValue({ results: [] }),
+      first: vi.fn().mockResolvedValue(null),
+      run: vi.fn().mockResolvedValue({ meta: { last_row_id: 1 } }),
+    }),
+    ...overrides,
+  };
+}
+
+function makeRequest(path, method = 'GET', body = null) {
+  const options = { method };
+  if (body) {
+    options.body = JSON.stringify(body);
+    options.headers = { 'Content-Type': 'application/json' };
+  }
+  return new Request(`https://tangerine-worker.pacificatch.workers.dev${path}`, options);
+}
+
+describe('Worker API', () => {
+  let env;
+
+  beforeEach(() => {
+    env = { tangerine_db: mockDb() };
+  });
+
+  describe('GET /api/health', () => {
+    it('returns status ok', async () => {
+      const response = await worker.fetch(makeRequest('/api/health'), env);
+      const data = await response.json();
+      expect(response.status).toBe(200);
+      expect(data.status).toBe('ok');
+      expect(data.message).toBe('Tangerine API is running');
+    });
+  });
+
+  describe('OPTIONS (CORS preflight)', () => {
+    it('returns 200 for preflight requests', async () => {
+      const response = await worker.fetch(makeRequest('/api/health', 'OPTIONS'), env);
+      expect(response.status).toBe(200);
+      expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+    });
+  });
+
+  describe('GET /api/vocabulary', () => {
+    it('returns vocabulary list', async () => {
+      const response = await worker.fetch(makeRequest('/api/vocabulary'), env);
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(Array.isArray(data)).toBe(true);
+    });
+  });
+
+  describe('POST /api/session/start', () => {
+    it('creates a new session and returns sessionId', async () => {
+      const response = await worker.fetch(
+        makeRequest('/api/session/start', 'POST', { levels: [1], lessons: [1, 2] }),
+        env
+      );
+      const data = await response.json();
+      expect(response.status).toBe(200);
+      expect(data.sessionId).toBe(1);
+    });
+  });
+
+  describe('POST /api/session/answer', () => {
+    it('records an answer and returns success', async () => {
+      const response = await worker.fetch(
+        makeRequest('/api/session/answer', 'POST', {
+          sessionId: 1,
+          vocabularyId: 1,
+          direction: 'char_to_eng',
+          isCorrect: true,
+          hintUsed: false,
+          attemptNumber: 1,
+        }),
+        env
+      );
+      const data = await response.json();
+      expect(response.status).toBe(200);
+      expect(data.success).toBe(true);
+    });
+  });
+
+  describe('GET /api/dashboard', () => {
+    it('returns dashboard stats', async () => {
+      const response = await worker.fetch(makeRequest('/api/dashboard'), env);
+      const data = await response.json();
+      expect(response.status).toBe(200);
+      expect(data).toHaveProperty('totalWords');
+      expect(data).toHaveProperty('totalSessions');
+      expect(data).toHaveProperty('lastSession');
+    });
+  });
+
+  describe('Unknown route', () => {
+    it('returns 404 for unknown routes', async () => {
+      const response = await worker.fetch(makeRequest('/api/unknown'), env);
+      expect(response.status).toBe(404);
+    });
+  });
+});

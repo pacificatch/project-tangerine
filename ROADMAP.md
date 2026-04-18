@@ -55,22 +55,31 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 2 — Backend & Database Foundation
-**Goal:** Stand up the backend API and connect it to PostgreSQL.
+## Milestone 2 — Backend & Database Foundation ✅ COMPLETE
+**Goal:** Stand up the Cloudflare Worker API and connect it to D1 (SQLite) database.
 
 ### Deliverables
-- [ ] Node.js/Express API running
-- [ ] PostgreSQL database connected
-- [ ] `vocabulary` table created
-- [ ] `sessions` table created
-- [ ] `answers` table created
-- [ ] Basic health check endpoint: GET /api/health returns 200 OK
-- [ ] Environment variables configured (.env)
+- [x] Cloudflare Worker created (`worker/src/index.js`)
+- [x] Cloudflare D1 database created (`tangerine-db`)
+- [x] `vocabulary` table created
+- [x] `sessions` table created
+- [x] `answers` table created
+- [x] `GET /api/health` — returns 200 OK
+- [x] `GET /api/vocabulary` — fetch vocabulary by level/lesson
+- [x] `POST /api/session/start` — start a quiz session
+- [x] `POST /api/session/answer` — record an answer
+- [x] `GET /api/dashboard` — fetch stats
+- [x] Worker deployed to Cloudflare
+- [x] 7/7 unit tests passing
 
 ### Success Criteria
-- Backend runs locally
-- Database tables exist and are accessible
-- Health check endpoint responds correctly
+- [x] Health check responds correctly
+- [x] Database tables exist and are accessible
+- [x] Worker live and reachable
+
+### Live URLs
+- Worker API: https://tangerine-worker.pacificatch.workers.dev
+- Health check: https://tangerine-worker.pacificatch.workers.dev/api/health
 
 ---
 
@@ -176,7 +185,7 @@ https://project-tangerine.pages.dev
 |-----------|--------|
 | 0 — Static Landing Page + Live Deployment | ✅ Complete |
 | 1 — React Frontend Setup | ✅ Complete |
-| 2 — Backend & Database | Not started |
+| 2 — Backend & Database | ✅ Complete |
 | 3 — Vocabulary Upload | Not started |
 | 4 — Session Setup | Not started |
 | 5 — Core Quiz Engine | Not started |
