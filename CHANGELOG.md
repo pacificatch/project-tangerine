@@ -63,4 +63,10 @@ Format: Date · Milestone · Description
 - React Router v7 installed for page routing
 - Vitest + React Testing Library + jsdom installed
 
-### Milestone 1 Status: 🚧 In Progress (deploy to Cloudflare pending)
+### Infrastructure
+- GitHub Actions workflow added (`.github/workflows/deploy.yml`)
+- Auto-deploy on every push to main: runs tests → builds → deploys to Cloudflare Pages
+- GitHub secrets configured: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
+- First automated deploy confirmed successful (all steps passed)
+
+### Milestone 1 Status: ✅ Complete

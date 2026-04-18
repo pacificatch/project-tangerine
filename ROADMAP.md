@@ -31,23 +31,27 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 1 — React Frontend Setup 🚧 IN PROGRESS
+## Milestone 1 — React Frontend Setup ✅ COMPLETE
 **Goal:** Replace the static page with a proper React app structure.
 
 ### Deliverables
 - [x] React app scaffolded (Vite)
-- [ ] Deploy to Cloudflare Pages
+- [x] Deploy to Cloudflare Pages
 - [x] Basic page routing set up (Dashboard, Quiz, Upload pages — empty for now)
 - [x] KaiTi font applied globally
 - [x] Tangerine color scheme applied via CSS
 - [x] Mobile responsive layout confirmed
 - [x] Unit tests written and passing (6/6)
+- [x] GitHub Actions auto-deploy on every push to main
 
 ### Success Criteria
 - [x] App loads in browser and on mobile
 - [x] Navigation between pages works
 - [x] Font and colors are correct
-- [ ] Deployed and accessible via public URL
+- [x] Deployed and accessible via public URL
+
+### Live URL
+https://project-tangerine.pages.dev
 
 ---
 
@@ -171,7 +175,7 @@ https://project-tangerine.pages.dev
 | Milestone | Status |
 |-----------|--------|
 | 0 — Static Landing Page + Live Deployment | ✅ Complete |
-| 1 — React Frontend Setup | In Progress |
+| 1 — React Frontend Setup | ✅ Complete |
 | 2 — Backend & Database | Not started |
 | 3 — Vocabulary Upload | Not started |
 | 4 — Session Setup | Not started |
