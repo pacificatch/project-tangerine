@@ -21,5 +21,8 @@
   "homepage": "https://github.com/pacificatch/project-tangerine#readme",
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "xlsx": "^0.18.5"
   }
 }

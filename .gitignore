@@ -22,3 +22,6 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Generated import files
+scripts/vocabulary-seed.sql
