@@ -30,12 +30,11 @@ Format: Date · Milestone · Description
 - GitHub repo created: https://github.com/pacificatch/project-tangerine
 - Local directory: `~/projects/project-tangerine`
 
----
+### Deployed
+- Wrangler CLI installed (v4.83.0)
+- Cloudflare Pages project created: `project-tangerine`
+- Static `public/` folder deployed to Cloudflare Pages
+- Live URL: https://project-tangerine.pages.dev
+- Verified accessible on desktop and mobile via public URL
 
-## [Upcoming] — Milestone 0 continued: Cloudflare Deployment
-
-### Planned
-- Deploy static page to Cloudflare Pages
-- Deploy Node.js backend to Cloudflare Workers
-- Configure environment variables in Cloudflare
-- Verify app accessible via public URL on mobile
+### Milestone 0 Status: ✅ Complete

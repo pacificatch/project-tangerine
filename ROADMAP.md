@@ -8,7 +8,7 @@
 
 ---
 
-## Milestone 0 — Static Landing Page + Live Deployment 🚧 IN PROGRESS
+## Milestone 0 — Static Landing Page + Live Deployment ✅ COMPLETE
 **Goal:** Prove the full pipeline works end-to-end — from local development to a live public URL — before writing any real app code.
 
 ### Deliverables
@@ -18,15 +18,16 @@
 - [x] Git version tracking confirmed (commit history visible)
 - [x] Site accessible locally (localhost)
 - [x] Site accessible from mobile phone on the same network
-- [ ] React frontend deployed to Cloudflare Pages
-- [ ] Node.js backend deployed to Cloudflare Workers
-- [ ] Environment variables configured in Cloudflare
-- [ ] App accessible on mobile via public URL (not just local network)
+- [x] Static page deployed to Cloudflare Pages
+- [x] App accessible on mobile via public URL (not just local network)
 
 ### Success Criteria
-- You can open the live public URL on your phone using mobile data (not WiFi)
-- You can see the Tangerine name and colors
-- A git commit captures the working state
+- [x] Opened live URL on phone using mobile data — confirmed working
+- [x] Tangerine name and colors visible
+- [x] Git commit captures working state
+
+### Live URL
+https://project-tangerine.pages.dev
 
 ---
 
@@ -167,7 +168,7 @@
 ## Current Status
 | Milestone | Status |
 |-----------|--------|
-| 0 — Static Landing Page + Live Deployment | In Progress |
+| 0 — Static Landing Page + Live Deployment | ✅ Complete |
 | 1 — React Frontend Setup | Not started |
 | 2 — Backend & Database | Not started |
 | 3 — Vocabulary Upload | Not started |
