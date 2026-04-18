@@ -16,6 +16,52 @@
   margin-bottom: 1.5rem;
 }
 
+.quiz-active {
+  background: #fff8f0;
+  border: 1px solid #e8c9a0;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+}
+
+.quiz-active-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.quiz-active-meta {
+  font-size: 0.88rem;
+  color: #6b4c1e;
+}
+
+.session-id-badge {
+  color: #4a7c3f;
+  font-weight: bold;
+}
+
+.btn-end-session {
+  background: transparent;
+  border: 1px solid #d4905a;
+  color: #8c6030;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.btn-end-session:hover {
+  background: #fff3e0;
+}
+
+.quiz-placeholder {
+  color: #8c6030;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
 .auth-banner {
   background: #f0faf0;
   border: 1px solid #4a7c3f;

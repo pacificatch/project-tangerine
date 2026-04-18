@@ -164,6 +164,34 @@ None — no application logic in Milestone 0.
 
 ---
 
+## Milestone 5 — Session Setup
+
+### Manual Tests
+| Test | Method | Result |
+|------|--------|--------|
+| Session setup screen appears after auth/skip | Navigate to Quiz, skip password | 🔲 Pending user test |
+| Lessons load and display as checkboxes | Visual check | 🔲 Pending user test |
+| Select All / Deselect All per level works | Click button | 🔲 Pending user test |
+| Start Session disabled until a lesson selected | Visual check | 🔲 Pending user test |
+| Start Session loads words and transitions to active view | Select lesson, click Start | 🔲 Pending user test |
+| Active view shows word count and lesson labels | Visual check | 🔲 Pending user test |
+| Session ID shown when authenticated | Log in, start session | 🔲 Pending user test |
+| End Session returns to setup screen | Click End Session | 🔲 Pending user test |
+
+### Automated Tests
+| Test | Framework | Status |
+|------|-----------|--------|
+| GET /api/lessons returns level/lesson pairs | Vitest | ✅ Pass |
+| Session setup renders after skipping password | React Testing Library | ✅ Pass |
+| Lesson checkboxes visible after load | React Testing Library | ✅ Pass |
+| Start Session disabled with no lessons selected | React Testing Library | ✅ Pass |
+| Start Session enabled after selecting a lesson | React Testing Library | ✅ Pass |
+
+**Worker result: 14/14 tests passed** — `worker/src/test/worker.test.js`
+**Frontend result: 15/15 tests passed** — `client/src/test/App.test.jsx`
+
+---
+
 ## Legend
 | Symbol | Meaning |
 |--------|---------|

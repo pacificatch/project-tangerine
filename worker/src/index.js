@@ -47,6 +47,14 @@ export default {
       return json({ authenticated });
     }
 
+    // GET /api/lessons
+    if (pathname === '/api/lessons' && request.method === 'GET') {
+      const { results } = await env.tangerine_db
+        .prepare('SELECT DISTINCT level, lesson FROM vocabulary ORDER BY level, lesson')
+        .all();
+      return json(results);
+    }
+
     // GET /api/vocabulary
     if (pathname === '/api/vocabulary' && request.method === 'GET') {
       const level = url.searchParams.get('level');

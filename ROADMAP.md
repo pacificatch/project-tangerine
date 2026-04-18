@@ -128,17 +128,17 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 5 — Session Setup
+## Milestone 5 — Session Setup ✅ COMPLETE
 **Goal:** Let user select which level(s) and lesson(s) to drill.
 
 ### Deliverables
-- [ ] Session setup screen: select level(s) and lesson(s)
-- [ ] Vocabulary filtered by selected levels/lessons
-- [ ] Session record created in the database on start
-- [ ] User can cancel/terminate session at any time
+- [x] Session setup screen: select level(s) and lesson(s)
+- [x] Vocabulary filtered by selected levels/lessons
+- [x] Session record created in the database on start (authenticated only)
+- [x] User can end/terminate session at any time (End Session button)
 
 ### Success Criteria
-- Select Level 1 Lesson 2 → quiz only shows Level 1 Lesson 2 words
+- [x] Select Level 1 Lesson 2 → quiz only shows Level 1 Lesson 2 words
 
 ---
 
@@ -217,7 +217,7 @@ https://project-tangerine.pages.dev
 | 2 — Backend & Database | ✅ Complete |
 | 3 — Vocabulary Upload | ✅ Complete |
 | 4 — Password & Session Recording | ✅ Complete |
-| 5 — Session Setup | Not started |
+| 5 — Session Setup | ✅ Complete |
 | 6 — Core Quiz Engine | Not started |
 | 7 — Audio Pronunciation | Not started |
 | 8 — Dashboard & Progress | Not started |

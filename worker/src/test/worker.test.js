@@ -83,6 +83,30 @@ describe('Worker API', () => {
     });
   });
 
+  describe('GET /api/lessons', () => {
+    it('returns distinct level/lesson pairs', async () => {
+      env.tangerine_db.prepare = vi.fn().mockReturnValue({
+        all: vi.fn().mockResolvedValue({
+          results: [{ level: 1, lesson: 1 }, { level: 1, lesson: 2 }],
+        }),
+        bind: vi.fn().mockReturnValue({
+          all: vi.fn().mockResolvedValue({ results: [] }),
+          run: vi.fn().mockResolvedValue({ meta: { last_row_id: 1 } }),
+          first: vi.fn().mockResolvedValue(null),
+        }),
+        first: vi.fn().mockResolvedValue(null),
+        run: vi.fn().mockResolvedValue({}),
+      });
+
+      const response = await worker.fetch(makeRequest('/api/lessons'), env);
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(Array.isArray(data)).toBe(true);
+      expect(data[0]).toHaveProperty('level');
+      expect(data[0]).toHaveProperty('lesson');
+    });
+  });
+
   describe('GET /api/vocabulary', () => {
     it('returns vocabulary list', async () => {
       const response = await worker.fetch(makeRequest('/api/vocabulary'), env);

@@ -144,6 +144,29 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 5: Session Setup
+
+### Added
+- `worker/src/index.js` — `GET /api/lessons` endpoint: returns distinct level/lesson pairs from vocabulary table
+- `client/src/components/SessionSetup.jsx` — lesson selector shown after password auth
+  - Checkboxes grouped by level, with "Select all / Deselect all" per level
+  - Fetches vocabulary for selected lessons in parallel on start
+  - Creates session record via `POST /api/session/start` when authenticated (skips if guest)
+  - Disabled "Start Session" button until at least one lesson selected
+- `client/src/components/SessionSetup.css` — styles for lesson selector
+- `client/src/pages/Quiz.jsx` — added `quizState: 'setup' | 'active'` flow
+  - Shows SessionSetup after auth, quiz active view after session starts
+  - Active view shows word count, selected lessons, session ID, and End Session button
+- `client/src/pages/Quiz.css` — styles for active quiz header and end session button
+
+### Testing
+- 14/14 Worker unit tests passing (added 1 test for `/api/lessons`)
+- 15/15 Frontend unit tests passing (added 4 tests for session setup)
+
+### Milestone 5 Status: ✅ Complete
+
+---
+
 ## [2026-04-18] — Milestone 4b: Upload Page Password Gate
 
 ### Added

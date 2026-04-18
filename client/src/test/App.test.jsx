@@ -47,6 +47,40 @@ describe('App', () => {
     expect(screen.getByText('橘子')).toBeInTheDocument();
   });
 
+  describe('Session setup', () => {
+    beforeEach(async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        json: async () => [
+          { level: 1, lesson: 1 },
+          { level: 1, lesson: 2 },
+        ],
+      });
+      render(<App />);
+      await userEvent.click(screen.getByRole('link', { name: 'Quiz' }));
+      await userEvent.click(screen.getByText(/Skip/));
+    });
+
+    it('shows session setup after skipping password', async () => {
+      expect(await screen.findByText('Choose Lessons to Practice')).toBeInTheDocument();
+    });
+
+    it('shows lesson checkboxes after loading', async () => {
+      expect(await screen.findByText('Lesson 1')).toBeInTheDocument();
+      expect(await screen.findByText('Lesson 2')).toBeInTheDocument();
+    });
+
+    it('Start Session button is disabled with no lessons selected', async () => {
+      await screen.findByText('Lesson 1');
+      expect(screen.getByRole('button', { name: 'Start Session' })).toBeDisabled();
+    });
+
+    it('Start Session button enables after selecting a lesson', async () => {
+      const checkbox = await screen.findByLabelText(/Lesson 1/);
+      await userEvent.click(checkbox);
+      expect(screen.getByRole('button', { name: 'Start Session' })).not.toBeDisabled();
+    });
+  });
+
   describe('Upload page auth gate', () => {
     beforeEach(async () => {
       render(<App />);

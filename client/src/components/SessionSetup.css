@@ -1,0 +1,141 @@
+.session-setup {
+  background: #fff8f0;
+  border: 1px solid #e8c9a0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.session-setup h3 {
+  margin: 0 0 0.3rem;
+  color: #4a2c0a;
+  font-size: 1.1rem;
+}
+
+.session-subtitle {
+  font-size: 0.88rem;
+  color: #8c6030;
+  margin-bottom: 1.25rem;
+}
+
+.session-loading,
+.session-error {
+  font-size: 0.95rem;
+  color: #6b4c1e;
+}
+
+.session-error {
+  color: #922b21;
+}
+
+/* Level group */
+.level-group {
+  margin-bottom: 1.25rem;
+}
+
+.level-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.level-label {
+  font-weight: bold;
+  color: #4a2c0a;
+  font-size: 0.95rem;
+}
+
+.btn-select-all {
+  background: none;
+  border: none;
+  color: #e07b20;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.btn-select-all:hover {
+  color: #c45e10;
+}
+
+/* Lesson checkboxes */
+.lesson-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lesson-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #d4905a;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #4a2c0a;
+  cursor: pointer;
+  background: #fff;
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.lesson-checkbox input[type="checkbox"] {
+  accent-color: #e07b20;
+}
+
+.lesson-checkbox.checked {
+  background: #e07b20;
+  border-color: #e07b20;
+  color: #fff;
+}
+
+.lesson-checkbox.checked input[type="checkbox"] {
+  accent-color: #fff;
+}
+
+/* Footer */
+.session-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.session-count {
+  font-size: 0.88rem;
+  color: #8c6030;
+}
+
+/* Reuse btn-primary from Upload.css — defined globally via App.css or inline */
+.session-setup .btn-primary {
+  background: #e07b20;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.session-setup .btn-primary:hover:not(:disabled) {
+  background: #c45e10;
+}
+
+.session-setup .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .session-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
