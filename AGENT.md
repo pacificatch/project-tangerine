@@ -6,12 +6,12 @@ A web-based Traditional Chinese character memorization app called **Tangerine**.
 **Branding:** Tangerine — inspired by Mandarin language → Mandarin orange → Tangerine. Color scheme: orange (fruit), green (leaves), brown (branch).
 
 ## Stack
-- **Frontend:** React
-- **Backend:** Node.js + Express
-- **Database:** PostgreSQL
+- **Frontend:** React (Vite) — hosted on Cloudflare Pages
+- **Backend:** Cloudflare Workers (replaces Node.js/Express)
+- **Database:** Cloudflare D1 (SQLite) — native to Cloudflare
 - **Font:** KaiTi via Google Fonts / CDN
 - **Audio:** Web Speech API (browser built-in, free)
-- **Hosting:** Cloudflare (frontend, backend, database)
+- **Hosting:** Cloudflare (Pages + Workers + D1 — all in one)
 
 ## Project Conventions
 - Use camelCase for variables and functions
@@ -87,14 +87,10 @@ A web-based Traditional Chinese character memorization app called **Tangerine**.
 
 ## Key Commands
 ```bash
-npm install        # Install dependencies
-npm start          # Run the project
-npm test           # Run tests
-```
-
-## Environment Variables
-```
-DATABASE_URL=your_postgres_url_here
+cd client && npm run dev    # Run React frontend locally
+wrangler dev                # Run Cloudflare Worker locally
+cd client && npm test       # Run frontend tests
+wrangler deploy             # Deploy Worker to Cloudflare
 ```
 
 ## What to Avoid

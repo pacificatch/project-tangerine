@@ -6,12 +6,12 @@ A web-based app to help memorize Traditional Chinese characters sourced from the
 **Branding:** Tangerine — inspired by Mandarin language → Mandarin orange → Tangerine. Color scheme: orange (fruit), green (leaves), brown (branch).
 
 ## Tech Stack
-- **Frontend:** React
-- **Backend:** Node.js + Express
-- **Database:** PostgreSQL
+- **Frontend:** React (Vite)
+- **Backend:** Cloudflare Workers
+- **Database:** Cloudflare D1 (SQLite)
 - **Font:** KaiTi via Google Fonts / CDN
 - **Audio:** Web Speech API (browser built-in, free)
-- **Hosting:** Cloudflare (frontend, backend, database)
+- **Hosting:** Cloudflare (Pages, Workers, D1 — all in one)
 
 ## Phase 1 Features
 
@@ -78,7 +78,7 @@ A web-based app to help memorize Traditional Chinese characters sourced from the
 | Definition | English meaning |
 
 ## Progress & History
-- Progress persisted in PostgreSQL backend database
+- Progress persisted in Cloudflare D1 (SQLite) database
 - Track at both level and lesson granularity
 - Per-session correct/incorrect tracking per word per direction
 - History dashboard showing performance over time, struggling characters, streaks
@@ -114,21 +114,22 @@ A web-based app to help memorize Traditional Chinese characters sourced from the
 
 ### Prerequisites
 - Node.js
-- PostgreSQL
+- Wrangler CLI (`npm install -g wrangler`)
+- Cloudflare account
 
 ### Installation
 ```bash
 npm install
+cd client && npm install
 ```
 
-### Environment Variables
-```
-DATABASE_URL=your_postgres_url_here
-```
-
-### Running the Project
+### Running Locally
 ```bash
-npm start
+# Frontend
+cd client && npm run dev
+
+# Backend (Workers)
+wrangler dev
 ```
 
 ## Notes

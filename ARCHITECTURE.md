@@ -1,7 +1,7 @@
 # Tangerine — Technical Architecture
 
 ## Overview
-Tangerine is a full-stack web application for memorizing Traditional Chinese characters. It consists of a React frontend, a Node.js/Express backend, and a PostgreSQL database, all hosted on Cloudflare.
+Tangerine is a full-stack web application for memorizing Traditional Chinese characters. It consists of a React frontend, a Cloudflare Workers backend, and a Cloudflare D1 (SQLite) database — all hosted entirely within Cloudflare.
 
 ---
 
@@ -11,27 +11,31 @@ Tangerine is a full-stack web application for memorizing Traditional Chinese cha
 [ Browser / Mobile ]
         |
         v
-[ React Frontend ]  ── KaiTi font (CDN)
-        |               Web Speech API (browser)
-        v
-[ Node.js + Express Backend ]
+[ Cloudflare Pages ]  ── KaiTi font (CDN)
+   React Frontend         Web Speech API (browser)
         |
         v
-[ PostgreSQL Database ]
+[ Cloudflare Workers ]
+     Backend API
+        |
+        v
+[ Cloudflare D1 ]
+  SQLite Database
 
-All layers hosted on Cloudflare infrastructure.
+All layers hosted on Cloudflare. No external services required.
 ```
 
 ---
 
 ## Frontend
 
-- **Framework:** React
-- **Styling:** TBD (CSS Modules or Tailwind CSS)
+- **Framework:** React (Vite)
+- **Styling:** CSS Modules
 - **Font:** KaiTi — loaded via Google Fonts / CDN for all Chinese character display
 - **Audio:** Web Speech API — browser built-in, no external dependency
 - **Chinese Input:** User's system IME (pinyin → character selection)
 - **Hosting:** Cloudflare Pages
+- **Auto-deploy:** GitHub Actions on every push to main
 
 ### Key UI Components
 - Landing / Dashboard — stats, streaks, last session
@@ -43,18 +47,19 @@ All layers hosted on Cloudflare infrastructure.
 
 ## Backend
 
-- **Runtime:** Node.js
-- **Framework:** Express
+- **Runtime:** Cloudflare Workers (replaces Node.js/Express)
 - **Responsibilities:**
   - Serve API endpoints consumed by the React frontend
   - Parse and import uploaded CSV/Excel vocabulary files
   - Store and retrieve quiz session data
   - Track progress, accuracy, streaks
+  - Bind to Cloudflare D1 database
 - **Hosting:** Cloudflare Workers
 
 ### Key API Endpoints (planned)
 | Method | Endpoint | Description |
 |--------|----------|-------------|
+| GET | /api/health | Health check |
 | GET | /api/vocabulary | Fetch vocabulary by level/lesson |
 | POST | /api/upload | Upload CSV/Excel vocabulary file |
 | POST | /api/session/start | Start a new quiz session |
@@ -66,17 +71,23 @@ All layers hosted on Cloudflare infrastructure.
 
 ## Database
 
-- **Engine:** PostgreSQL
-- **Hosting:** Cloudflare (D1 or connected Postgres service)
+- **Engine:** SQLite via Cloudflare D1
+- **Hosting:** Cloudflare D1 (native, no external service)
+
+### Why D1 over PostgreSQL
+- Native to Cloudflare — no separate account or service needed
+- SQLite is sufficient for this app's data needs
+- Free tier is generous
+- Zero configuration
 
 ### Key Tables (planned)
 
 **vocabulary**
 | Column | Type | Description |
 |--------|------|-------------|
-| id | UUID | Primary key |
-| level | INT | Textbook level (1–4) |
-| lesson | INT | Lesson number |
+| id | INTEGER | Primary key (autoincrement) |
+| level | INTEGER | Textbook level (1–4) |
+| lesson | INTEGER | Lesson number |
 | traditional | TEXT | Traditional Chinese character(s) |
 | simplified | TEXT | Simplified Chinese character(s) |
 | pinyin | TEXT | Romanized pronunciation |
@@ -86,23 +97,23 @@ All layers hosted on Cloudflare infrastructure.
 **sessions**
 | Column | Type | Description |
 |--------|------|-------------|
-| id | UUID | Primary key |
-| started_at | TIMESTAMP | Session start time |
-| ended_at | TIMESTAMP | Session end time |
-| levels | INT[] | Levels covered |
-| lessons | INT[] | Lessons covered |
+| id | INTEGER | Primary key (autoincrement) |
+| started_at | TEXT | Session start time (ISO 8601) |
+| ended_at | TEXT | Session end time (ISO 8601) |
+| levels | TEXT | JSON array of levels covered |
+| lessons | TEXT | JSON array of lessons covered |
 
 **answers**
 | Column | Type | Description |
 |--------|------|-------------|
-| id | UUID | Primary key |
-| session_id | UUID | Foreign key → sessions |
-| vocabulary_id | UUID | Foreign key → vocabulary |
+| id | INTEGER | Primary key (autoincrement) |
+| session_id | INTEGER | Foreign key → sessions |
+| vocabulary_id | INTEGER | Foreign key → vocabulary |
 | direction | TEXT | 'char_to_eng' or 'eng_to_char' |
-| is_correct | BOOLEAN | Whether answered correctly |
-| hint_used | BOOLEAN | Whether a hint was requested |
-| attempt_number | INT | Which attempt (1, 2, 3, 4) |
-| answered_at | TIMESTAMP | Timestamp of answer |
+| is_correct | INTEGER | 1 = correct, 0 = incorrect |
+| hint_used | INTEGER | 1 = hint requested, 0 = no hint |
+| attempt_number | INTEGER | Which attempt (1–4) |
+| answered_at | TEXT | Timestamp (ISO 8601) |
 
 ---
 
@@ -121,13 +132,18 @@ All layers hosted on Cloudflare infrastructure.
 | Layer | Cloudflare Service |
 |-------|--------------------|
 | Frontend (React) | Cloudflare Pages |
-| Backend (Node/Express) | Cloudflare Workers |
-| Database (PostgreSQL) | Cloudflare D1 or external Postgres |
+| Backend API | Cloudflare Workers |
+| Database | Cloudflare D1 (SQLite) |
+
+### Deployment Flow
+1. Push code to GitHub (`main` branch)
+2. GitHub Actions runs tests → builds React app → deploys to Cloudflare Pages
+3. Cloudflare Workers deploy separately via Wrangler
 
 ---
 
 ## Future Architecture Additions
-- Claude API integration (backend) — for AI-generated mnemonics
+- Claude API integration (Workers backend) — for AI-generated mnemonics
 - Authentication service — for multi-user support
 - Spaced repetition engine
 - PDF parser for vocabulary upload

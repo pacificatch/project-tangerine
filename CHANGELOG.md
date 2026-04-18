@@ -70,3 +70,17 @@ Format: Date · Milestone · Description
 - First automated deploy confirmed successful (all steps passed)
 
 ### Milestone 1 Status: ✅ Complete
+
+---
+
+## [2026-04-18] — Architecture Decision: Switch to Cloudflare D1
+
+### Changed
+- **Database:** PostgreSQL → Cloudflare D1 (SQLite)
+- **Backend:** Node.js/Express → Cloudflare Workers
+- **Reason:** D1 is native to Cloudflare, no external service needed, SQLite is sufficient for this app, free tier is generous
+
+### Updated
+- `ARCHITECTURE.md` — updated system diagram, backend, database sections
+- `README.md` — updated tech stack, prerequisites, run commands
+- `AGENT.md` — updated stack and key commands
