@@ -103,7 +103,29 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 4 — Session Setup
+## Milestone 4 — Password & Session Recording
+**Goal:** Gate performance recording behind a password. Anyone can use the app, but only the correct password enables results to be saved.
+
+### Deliverables
+- [ ] Password prompt shown before every quiz session
+- [ ] Three scenarios handled:
+  - No password (skip) → quiz runs, session not recorded
+  - Wrong password → quiz runs, session not recorded
+  - Correct password → quiz runs, session recorded normally
+- [ ] No lockout or error shown for wrong password — silently treated as guest
+- [ ] `POST /api/auth` endpoint — verifies password, returns authenticated true/false
+- [ ] Password stored as a hashed Cloudflare Worker secret (never plaintext)
+- [ ] Guest mode clearly indicated in the UI during quiz
+- [ ] Unit tests for auth endpoint
+
+### Success Criteria
+- Wrong password → quiz works but nothing recorded in database
+- Correct password → quiz results appear in progress/history
+- Password never stored or transmitted in plaintext
+
+---
+
+## Milestone 5 — Session Setup
 **Goal:** Let user select which level(s) and lesson(s) to drill.
 
 ### Deliverables
@@ -117,7 +139,7 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 5 — Core Quiz Engine
+## Milestone 6 — Core Quiz Engine
 **Goal:** The quiz works with correct randomization and direction logic.
 
 ### Deliverables
@@ -141,7 +163,7 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 6 — Audio Pronunciation
+## Milestone 7 — Audio Pronunciation
 **Goal:** Tap a button to hear the character pronounced in Mandarin.
 
 ### Deliverables
@@ -154,7 +176,7 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 7 — Dashboard & Progress Tracking
+## Milestone 8 — Dashboard & Progress Tracking
 **Goal:** Landing page shows meaningful stats about learning progress.
 
 ### Deliverables
@@ -191,7 +213,8 @@ https://project-tangerine.pages.dev
 | 1 — React Frontend Setup | ✅ Complete |
 | 2 — Backend & Database | ✅ Complete |
 | 3 — Vocabulary Upload | ✅ Complete |
-| 4 — Session Setup | Not started |
-| 5 — Core Quiz Engine | Not started |
-| 6 — Audio Pronunciation | Not started |
-| 7 — Dashboard & Progress | Not started |
+| 4 — Password & Session Recording | Not started |
+| 5 — Session Setup | Not started |
+| 6 — Core Quiz Engine | Not started |
+| 7 — Audio Pronunciation | Not started |
+| 8 — Dashboard & Progress | Not started |
