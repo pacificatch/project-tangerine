@@ -1,0 +1,25 @@
+{
+  "name": "project-tangerine",
+  "version": "1.0.0",
+  "description": "A web-based app to help memorize Traditional Chinese characters sourced from the Integrated Chinese textbook. The app provides structured, interactive practice with an AI agent acting as a correction partner and quiz facilitator — not simply providing answers upfront. Learning style is collaborative and iterative: write first, receive targeted feedback second.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pacificatch/project-tangerine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/pacificatch/project-tangerine/issues"
+  },
+  "homepage": "https://github.com/pacificatch/project-tangerine#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
