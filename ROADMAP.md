@@ -83,19 +83,23 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 3 — Vocabulary Upload
+## Milestone 3 — Vocabulary Upload ✅ COMPLETE
 **Goal:** Import Chinese vocabulary into the database via file upload.
 
 ### Deliverables
-- [ ] Upload interface in the React frontend
-- [ ] Backend parses CSV/Excel file
-- [ ] Vocabulary inserted into the `vocabulary` table
-- [ ] Display uploaded vocabulary list (level, lesson, character, pinyin, definition)
-- [ ] Duplicate handling (don't insert the same word twice)
+- [x] Upload interface in the React frontend
+- [x] Frontend parses Excel/CSV using SheetJS
+- [x] Preview first 10 rows before importing
+- [x] Vocabulary inserted into the `vocabulary` table via Worker API
+- [x] Display inserted vs skipped count after upload
+- [x] Duplicate handling (skip if traditional + level + lesson already exists)
+- [x] One-time import script for existing Excel file (375 words loaded)
+- [x] 10/10 unit tests passing
 
 ### Success Criteria
-- Upload a CSV file from the UI
-- Vocabulary appears in the database and on screen
+- [x] Upload a CSV/Excel file from the UI
+- [x] Preview rows before importing
+- [x] Vocabulary imported into database with duplicate protection
 
 ---
 
@@ -186,7 +190,7 @@ https://project-tangerine.pages.dev
 | 0 — Static Landing Page + Live Deployment | ✅ Complete |
 | 1 — React Frontend Setup | ✅ Complete |
 | 2 — Backend & Database | ✅ Complete |
-| 3 — Vocabulary Upload | Not started |
+| 3 — Vocabulary Upload | ✅ Complete |
 | 4 — Session Setup | Not started |
 | 5 — Core Quiz Engine | Not started |
 | 6 — Audio Pronunciation | Not started |

@@ -103,6 +103,70 @@ describe('Worker API', () => {
     });
   });
 
+  describe('POST /api/upload', () => {
+    it('returns error when no rows provided', async () => {
+      const response = await worker.fetch(
+        makeRequest('/api/upload', 'POST', { rows: [], level: 1 }),
+        env
+      );
+      expect(response.status).toBe(400);
+    });
+
+    it('skips duplicate entries', async () => {
+      // Mock db to simulate existing record
+      env.tangerine_db = mockDb();
+      env.tangerine_db.prepare = vi.fn().mockReturnValue({
+        bind: vi.fn().mockReturnValue({
+          first: vi.fn().mockResolvedValue({ id: 1 }), // simulate duplicate
+          run: vi.fn().mockResolvedValue({}),
+          all: vi.fn().mockResolvedValue({ results: [] }),
+        }),
+        first: vi.fn().mockResolvedValue(null),
+        all: vi.fn().mockResolvedValue({ results: [] }),
+        run: vi.fn().mockResolvedValue({}),
+      });
+
+      const response = await worker.fetch(
+        makeRequest('/api/upload', 'POST', {
+          rows: [{ traditional: '你好', simplified: '', pinyin: 'nǐ hǎo', part_of_speech: 'phrase', definition: 'hello', lesson: 1 }],
+          level: 1,
+        }),
+        env
+      );
+      const data = await response.json();
+      expect(response.status).toBe(200);
+      expect(data.skipped).toBe(1);
+      expect(data.inserted).toBe(0);
+    });
+
+    it('inserts new rows successfully', async () => {
+      // Mock db to simulate no existing record
+      env.tangerine_db = mockDb();
+      env.tangerine_db.prepare = vi.fn().mockReturnValue({
+        bind: vi.fn().mockReturnValue({
+          first: vi.fn().mockResolvedValue(null), // no duplicate
+          run: vi.fn().mockResolvedValue({}),
+          all: vi.fn().mockResolvedValue({ results: [] }),
+        }),
+        first: vi.fn().mockResolvedValue(null),
+        all: vi.fn().mockResolvedValue({ results: [] }),
+        run: vi.fn().mockResolvedValue({}),
+      });
+
+      const response = await worker.fetch(
+        makeRequest('/api/upload', 'POST', {
+          rows: [{ traditional: '你好', simplified: '', pinyin: 'nǐ hǎo', part_of_speech: 'phrase', definition: 'hello', lesson: 1 }],
+          level: 1,
+        }),
+        env
+      );
+      const data = await response.json();
+      expect(response.status).toBe(200);
+      expect(data.inserted).toBe(1);
+      expect(data.skipped).toBe(0);
+    });
+  });
+
   describe('Unknown route', () => {
     it('returns 404 for unknown routes', async () => {
       const response = await worker.fetch(makeRequest('/api/unknown'), env);

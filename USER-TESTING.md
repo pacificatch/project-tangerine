@@ -75,8 +75,12 @@ If any test fails, the deploy is blocked — broken code never goes live.
 - [ ] Open https://tangerine-worker.pacificatch.workers.dev/api/health in browser — should show `{"status":"ok","message":"Tangerine API is running"}`
 - [ ] Confirm no errors in the response
 
-### Milestone 3 — Vocabulary Upload (coming soon)
-- [ ] To be added
+### Milestone 3 — Vocabulary Upload
+- [ ] Open the app and click **Upload** in the nav
+- [ ] Select your `Chinese_I_Vocabulary.xlsx` file
+- [ ] Confirm the preview shows the first 10 rows with correct characters, pinyin, and definitions
+- [ ] Click **Import** and confirm the success screen shows inserted count
+- [ ] Upload the same file again — confirm skipped count equals total rows (duplicate protection works)
 
 ### Milestone 4 — Session Setup (coming soon)
 - [ ] To be added

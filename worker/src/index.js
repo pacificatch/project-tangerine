@@ -46,6 +46,52 @@ export default {
       return json(results);
     }
 
+    // POST /api/upload
+    if (pathname === '/api/upload' && request.method === 'POST') {
+      const { rows, level } = await request.json();
+
+      if (!Array.isArray(rows) || rows.length === 0) {
+        return json({ error: 'No rows provided' }, 400);
+      }
+
+      let inserted = 0;
+      let skipped = 0;
+      const errors = [];
+
+      for (const row of rows) {
+        const { traditional, simplified, pinyin, part_of_speech, definition, lesson } = row;
+
+        if (!traditional || !pinyin || !definition || !lesson) {
+          skipped++;
+          continue;
+        }
+
+        // Check for duplicate (same traditional + level + lesson)
+        const existing = await env.tangerine_db
+          .prepare('SELECT id FROM vocabulary WHERE traditional = ? AND level = ? AND lesson = ?')
+          .bind(traditional, level, lesson)
+          .first();
+
+        if (existing) {
+          skipped++;
+          continue;
+        }
+
+        try {
+          await env.tangerine_db
+            .prepare('INSERT INTO vocabulary (level, lesson, traditional, simplified, pinyin, part_of_speech, definition) VALUES (?, ?, ?, ?, ?, ?, ?)')
+            .bind(level, lesson, traditional, simplified || '', pinyin, part_of_speech || '', definition)
+            .run();
+          inserted++;
+        } catch (err) {
+          errors.push({ row, error: err.message });
+          skipped++;
+        }
+      }
+
+      return json({ inserted, skipped, errors });
+    }
+
     // POST /api/session/start
     if (pathname === '/api/session/start' && request.method === 'POST') {
       const { levels, lessons } = await request.json();

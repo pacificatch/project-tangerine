@@ -94,6 +94,29 @@ None — no application logic in Milestone 0.
 
 ---
 
+## Milestone 3 — Vocabulary Upload
+
+### Manual Tests
+| Test | Method | Result |
+|------|--------|--------|
+| Upload page loads | Open /upload in browser | ✅ Pass |
+| File picker accepts .xlsx/.csv | Select file | 🔲 Pending user test |
+| Preview shows first 10 rows | Upload Excel file | 🔲 Pending user test |
+| Import button submits to Worker | Click import | 🔲 Pending user test |
+| Success screen shows inserted/skipped count | After import | 🔲 Pending user test |
+| Duplicate words are skipped | Re-upload same file | 🔲 Pending user test |
+
+### Automated Tests
+| Test | Framework | Status |
+|------|-----------|--------|
+| POST /api/upload returns 400 for empty rows | Vitest | ✅ Pass |
+| POST /api/upload skips duplicate entries | Vitest | ✅ Pass |
+| POST /api/upload inserts new rows successfully | Vitest | ✅ Pass |
+
+**Result: 10/10 tests passed** — `worker/src/test/worker.test.js`
+
+---
+
 ## Legend
 | Symbol | Meaning |
 |--------|---------|

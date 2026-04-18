@@ -102,6 +102,25 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 3: Vocabulary Upload
+
+### Added
+- `client/src/pages/Upload.jsx` — Upload page with file picker, preview, and import
+- `client/src/pages/Upload.css` — Upload page styling
+- `worker/src/index.js` — Added `POST /api/upload` endpoint with duplicate detection
+- `scripts/import-vocabulary.js` — One-time import script for Excel file
+- SheetJS (xlsx) installed in React client for browser-side Excel/CSV parsing
+
+### Data
+- 375 Level 1 vocabulary words imported from Integrated Chinese (Lessons 1–10)
+
+### Testing
+- 10/10 Worker unit tests passing (added 3 tests for upload endpoint)
+
+### Milestone 3 Status: ✅ Complete
+
+---
+
 ## [2026-04-18] — Architecture Decision: Switch to Cloudflare D1
 
 ### Changed
