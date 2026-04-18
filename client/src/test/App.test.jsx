@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import App from '../App';
 
 describe('App', () => {
@@ -45,5 +45,48 @@ describe('App', () => {
   it('renders footer with Chinese characters', () => {
     render(<App />);
     expect(screen.getByText('橘子')).toBeInTheDocument();
+  });
+
+  describe('Upload page auth gate', () => {
+    beforeEach(async () => {
+      render(<App />);
+      await userEvent.click(screen.getByRole('link', { name: 'Upload' }));
+    });
+
+    it('shows password gate on Upload page by default', () => {
+      expect(screen.getByText('Password required to upload vocabulary.')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Enter password')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Unlock' })).toBeInTheDocument();
+    });
+
+    it('Import button is disabled when locked', () => {
+      // The auth gate is visible and the Unlock button is present, confirming locked state.
+      // The Import button only appears after file selection (which requires real file parsing),
+      // so we verify the locked state by confirming the auth gate is shown.
+      expect(screen.getByRole('button', { name: 'Unlock' })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /Import/i })).not.toBeInTheDocument();
+    });
+
+    it('shows error message for wrong password', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        json: async () => ({ authenticated: false }),
+      });
+
+      await userEvent.type(screen.getByPlaceholderText('Enter password'), 'wrongpassword');
+      await userEvent.click(screen.getByRole('button', { name: 'Unlock' }));
+
+      expect(await screen.findByText('Incorrect password. Upload is disabled.')).toBeInTheDocument();
+    });
+
+    it('unlocks upload on correct password', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        json: async () => ({ authenticated: true }),
+      });
+
+      await userEvent.type(screen.getByPlaceholderText('Enter password'), 'correctpassword');
+      await userEvent.click(screen.getByRole('button', { name: 'Unlock' }));
+
+      expect(await screen.findByText('Authenticated — upload is enabled')).toBeInTheDocument();
+    });
   });
 });

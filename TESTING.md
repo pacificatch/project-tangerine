@@ -137,7 +137,30 @@ None — no application logic in Milestone 0.
 | Skip button shows guest banner | React Testing Library | ✅ Pass |
 
 **Worker result: 13/13 tests passed** — `worker/src/test/worker.test.js`
-**Frontend result: 7/7 tests passed** — `client/src/test/App.test.jsx`
+**Frontend result: 11/11 tests passed** — `client/src/test/App.test.jsx`
+
+---
+
+## Milestone 4b — Upload Page Password Gate
+
+### Manual Tests
+| Test | Method | Result |
+|------|--------|--------|
+| Password gate appears on Upload page | Navigate to /upload | 🔲 Pending user test |
+| Wrong password shows error message | Enter wrong password, click Unlock | 🔲 Pending user test |
+| Correct password shows auth banner | Enter correct password, click Unlock | 🔲 Pending user test |
+| Import button disabled when locked | Load file without unlocking | 🔲 Pending user test |
+| Import button enabled after unlock | Unlock then load file | 🔲 Pending user test |
+
+### Automated Tests
+| Test | Framework | Status |
+|------|-----------|--------|
+| Password gate renders on Upload page | React Testing Library | ✅ Pass |
+| Import button absent when locked (no file loaded) | React Testing Library | ✅ Pass |
+| Wrong password shows error message | React Testing Library | ✅ Pass |
+| Correct password shows auth banner | React Testing Library | ✅ Pass |
+
+**Frontend result: 11/11 tests passed** — `client/src/test/App.test.jsx`
 
 ---
 

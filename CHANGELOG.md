@@ -144,6 +144,20 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 4b: Upload Page Password Gate
+
+### Added
+- `client/src/pages/Upload.jsx` — inline password gate above upload controls
+  - Password required to enable the Import button
+  - Wrong password shows error message; upload stays disabled
+  - Correct password shows auth banner and enables import
+- `client/src/pages/Upload.css` — styles for auth gate, error message, auth banner
+
+### Testing
+- 11/11 frontend unit tests passing (added 4 tests for upload auth gate)
+
+---
+
 ## [2026-04-18] — Architecture Decision: Switch to Cloudflare D1
 
 ### Changed

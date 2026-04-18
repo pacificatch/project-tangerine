@@ -5,12 +5,44 @@ import './Upload.css';
 const WORKER_URL = 'https://tangerine-worker.pacificatch.workers.dev';
 
 function Upload() {
+  const [authState, setAuthState] = useState('locked'); // 'locked' | 'authenticated'
+  const [authPassword, setAuthPassword] = useState('');
+  const [authChecking, setAuthChecking] = useState(false);
+  const [authError, setAuthError] = useState(false);
+
   const [preview, setPreview] = useState([]);
   const [level, setLevel] = useState(1);
   const [fileName, setFileName] = useState('');
   const [status, setStatus] = useState(null); // null | 'uploading' | 'success' | 'error'
   const [result, setResult] = useState(null);
   const fileRef = useRef();
+
+  async function handleAuthSubmit(e) {
+    e.preventDefault();
+    if (!authPassword.trim()) {
+      setAuthError(true);
+      return;
+    }
+    setAuthChecking(true);
+    setAuthError(false);
+    try {
+      const res = await fetch(`${WORKER_URL}/api/auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: authPassword }),
+      });
+      const data = await res.json();
+      if (data.authenticated) {
+        setAuthState('authenticated');
+      } else {
+        setAuthError(true);
+      }
+    } catch {
+      setAuthError(true);
+    } finally {
+      setAuthChecking(false);
+    }
+  }
 
   function handleFile(e) {
     const file = e.target.files[0];
@@ -74,6 +106,31 @@ function Upload() {
       <h2>Upload Vocabulary</h2>
       <p className="upload-subtitle">Upload your Integrated Chinese Excel or CSV file to import vocabulary into the database.</p>
 
+      {authState === 'locked' && (
+        <div className="upload-auth-gate">
+          <p className="upload-auth-label">Password required to upload vocabulary.</p>
+          <form className="upload-auth-form" onSubmit={handleAuthSubmit}>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={authPassword}
+              onChange={e => setAuthPassword(e.target.value)}
+              autoFocus
+            />
+            <button type="submit" className="btn-primary" disabled={authChecking}>
+              {authChecking ? 'Checking...' : 'Unlock'}
+            </button>
+          </form>
+          {authError && (
+            <p className="upload-auth-error">Incorrect password. Upload is disabled.</p>
+          )}
+        </div>
+      )}
+
+      {authState === 'authenticated' && (
+        <div className="auth-banner">Authenticated — upload is enabled</div>
+      )}
+
       <div className="upload-controls">
         <div className="upload-field">
           <label>Level</label>
@@ -135,10 +192,14 @@ function Upload() {
           <button
             className="btn-primary"
             onClick={handleUpload}
-            disabled={status === 'uploading'}
+            disabled={status === 'uploading' || authState === 'locked'}
+            title={authState === 'locked' ? 'Enter password to enable upload' : undefined}
           >
             {status === 'uploading' ? 'Uploading...' : `Import ${preview.length} words into database`}
           </button>
+          {authState === 'locked' && (
+            <p className="upload-locked-note">Enter the password above to enable import.</p>
+          )}
         </div>
       )}
 
