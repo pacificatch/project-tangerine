@@ -12,8 +12,12 @@ function SessionSetup({ isAuthenticated, onSessionStart }) {
 
   useEffect(() => {
     fetch(`${WORKER_URL}/api/lessons`)
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
       .then(data => {
+        if (!Array.isArray(data)) throw new Error('Unexpected response');
         setLessons(data);
         setLoading(false);
       })
