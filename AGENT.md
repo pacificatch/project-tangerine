@@ -90,8 +90,15 @@ A web-based Traditional Chinese character memorization app called **Tangerine**.
 cd client && npm run dev    # Run React frontend locally
 wrangler dev                # Run Cloudflare Worker locally
 cd client && npm test       # Run frontend tests
-wrangler deploy             # Deploy Worker to Cloudflare
+cd worker && npm test       # Run Worker tests
+wrangler deploy             # Deploy Worker to Cloudflare (must be run from worker/ directory)
 ```
+
+## Deployment Rules — IMPORTANT
+- **GitHub Actions auto-deploys the frontend only** (Cloudflare Pages) on every push to main
+- **The Worker is NOT auto-deployed** — any change to `worker/src/index.js` requires a manual `cd worker && npx wrangler deploy`
+- Always run `wrangler deploy` after modifying Worker code, before telling the user a feature is complete
+- Skipping this causes runtime crashes on the live site even though tests pass locally
 
 ## What to Avoid
 - Do not commit .env files
