@@ -38,3 +38,29 @@ Format: Date · Milestone · Description
 - Verified accessible on desktop and mobile via public URL
 
 ### Milestone 0 Status: ✅ Complete
+
+---
+
+## [2026-04-18] — Milestone 1: React Frontend Setup
+
+### Added
+- `client/` — Vite + React app scaffolded
+- `client/src/pages/Dashboard.jsx` — Dashboard placeholder page
+- `client/src/pages/Quiz.jsx` — Quiz placeholder page
+- `client/src/pages/Upload.jsx` — Upload placeholder page
+- `client/src/App.jsx` — App shell with header, nav, routing, footer
+- `client/src/App.css` — Tangerine color scheme, responsive layout
+- `client/src/index.css` — Global styles, KaiTi font (Ma Shan Zheng via Google Fonts)
+- `client/src/test/setup.js` — Vitest test setup
+- `client/src/test/App.test.jsx` — 6 unit tests for App component
+- `TESTING.md` — Testing documentation file
+
+### Testing
+- Vitest + React Testing Library configured
+- 6/6 automated tests passed (App render, navigation, routing, footer)
+
+### Infrastructure
+- React Router v7 installed for page routing
+- Vitest + React Testing Library + jsdom installed
+
+### Milestone 1 Status: 🚧 In Progress (deploy to Cloudflare pending)

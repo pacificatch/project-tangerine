@@ -1,0 +1,114 @@
+/* ── Layout ── */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.header {
+  background-color: #e07b20;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+}
+
+.logo-text {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  color: #fff3e0;
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-weight: bold;
+}
+
+/* ── Main ── */
+.main {
+  flex: 1;
+  padding: 2rem 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.page h2 {
+  font-size: 1.5rem;
+  color: #c45e10;
+  margin-bottom: 0.75rem;
+}
+
+.page p {
+  color: #6b4c1e;
+}
+
+/* ── Footer ── */
+.footer {
+  background-color: #4a2c0a;
+  color: #f5c992;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.chinese-sample {
+  font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', cursive;
+  font-size: 1.4rem;
+  color: #f5a623;
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .main {
+    padding: 1.25rem 1rem;
+  }
+}
