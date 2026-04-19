@@ -130,11 +130,9 @@ describe('App', () => {
       expect(screen.getByText('nǐ hǎo')).toBeInTheDocument();
     });
 
-    it('shows hint notice when Hint is used and answer is skipped', async () => {
-      await screen.findByRole('button', { name: 'Hint (pinyin)' });
-      await userEvent.click(screen.getByRole('button', { name: 'Hint (pinyin)' }));
-      await userEvent.click(screen.getByRole('button', { name: /Skip/ }));
-      expect(screen.getByText('Hint was used — counted as incorrect')).toBeInTheDocument();
+    it('does not show a hint button (deferred feature)', async () => {
+      await screen.findByPlaceholderText(/Type the/);
+      expect(screen.queryByRole('button', { name: /Hint/ })).not.toBeInTheDocument();
     });
   });
 

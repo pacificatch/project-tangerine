@@ -78,7 +78,6 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
   const [currentCard, setCurrentCard] = useState(null);
   const [phase, setPhase] = useState('question'); // 'question' | 'revealed' | 'done'
   const [showPinyin, setShowPinyin] = useState(false);
-  const [hintUsed, setHintUsed] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [autoResult, setAutoResult] = useState(null); // null | true | false
   const [totalCards, setTotalCards] = useState(0);
@@ -107,14 +106,8 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
     setCurrentCard({ ...queue[0] });
     setPhase('question');
     setShowPinyin(false);
-    setHintUsed(false);
     setUserInput('');
     setAutoResult(null);
-  }
-
-  function handleHint() {
-    setHintUsed(true);
-    setShowPinyin(true);
   }
 
   // User submits their typed answer
@@ -134,7 +127,6 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
 
   // Process the final result (auto or overridden)
   async function processResult(isCorrect) {
-    const actuallyCorrect = isCorrect && !hintUsed;
     const card = queueRef.current.shift();
 
     if (sessionId) {
@@ -145,14 +137,14 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
           sessionId,
           vocabularyId: card.word.id,
           direction: card.direction,
-          isCorrect: actuallyCorrect,
-          hintUsed,
+          isCorrect,
+          hintUsed: false,
           attemptNumber: card.attemptNumber,
         }),
       }).catch(() => {});
     }
 
-    if (actuallyCorrect) {
+    if (isCorrect) {
       const updatedCard = { ...card, correctCount: card.correctCount + 1 };
       setSessionStats(s => ({ ...s, correct: s.correct + 1 }));
       if (updatedCard.correctCount >= 2) {
@@ -161,8 +153,7 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
         requeue(queueRef.current, updatedCard);
       }
     } else {
-      const updatedCard = { ...card, attemptNumber: card.attemptNumber + 1 };
-      requeue(queueRef.current, updatedCard);
+      requeue(queueRef.current, { ...card, attemptNumber: card.attemptNumber + 1 });
       setSessionStats(s => ({ ...s, incorrect: s.incorrect + 1 }));
     }
 
@@ -295,19 +286,6 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
           </form>
         )}
 
-        {/* Hint button (question phase) */}
-        {phase === 'question' && (
-          <div className="quiz-hint-row">
-            <button
-              className="btn-hint"
-              onClick={handleHint}
-              disabled={hintUsed}
-            >
-              {hintUsed ? 'Hint shown' : 'Hint (pinyin)'}
-            </button>
-          </div>
-        )}
-
         {/* Revealed answer */}
         {phase === 'revealed' && (
           <div className="quiz-answer">
@@ -343,9 +321,6 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
               )}
             </div>
 
-            {hintUsed && (
-              <div className="quiz-hint-notice">Hint was used — counted as incorrect</div>
-            )}
           </div>
         )}
 

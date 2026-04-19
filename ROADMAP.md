@@ -153,7 +153,7 @@ https://project-tangerine.pages.dev
 - [x] Correct/incorrect tracked per word per direction
 - [x] Incorrect answers re-queued later (never sequentially)
 - [x] Max 2× correct per direction (4× total per word)
-- [x] Hint system (reveals pinyin): counts as incorrect even if answered correctly after
+- [ ] Hint system — deferred (requires example sentence data per word; no sentence data in DB yet)
 - [x] Session terminates when all words completed or user exits
 - [x] Completion screen with accuracy stats
 - [ ] Sentence hints — deferred (no sentence data in DB yet)
