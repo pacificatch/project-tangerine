@@ -95,7 +95,7 @@
 }
 
 .quiz-character {
-  font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', cursive;
+  font-family: 'Noto Serif TC', serif;
   font-size: 4rem;
   color: #4a2c0a;
   line-height: 1.2;
@@ -157,7 +157,7 @@
   font-size: 1.1rem;
   color: #4a2c0a;
   background: #fff;
-  font-family: 'Ma Shan Zheng', 'KaiTi', sans-serif;
+  font-family: 'Noto Serif TC', serif;
   box-sizing: border-box;
   transition: border-color 0.15s;
 }
@@ -224,7 +224,7 @@
 }
 
 .quiz-user-text {
-  font-family: 'Ma Shan Zheng', 'KaiTi', sans-serif;
+  font-family: 'Noto Serif TC', serif;
   font-size: 1.05rem;
   color: #4a2c0a;
 }
@@ -291,7 +291,7 @@
 .btn-override:hover { color: #4a2c0a; }
 
 .quiz-answer-character {
-  font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', cursive;
+  font-family: 'Noto Serif TC', serif;
   font-size: 3rem;
   color: #4a2c0a;
 }
