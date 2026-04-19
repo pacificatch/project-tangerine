@@ -50,6 +50,7 @@ describe('App', () => {
   describe('Session setup', () => {
     beforeEach(async () => {
       global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
         json: async () => [
           { level: 1, lesson: 1 },
           { level: 1, lesson: 2 },
@@ -81,6 +82,60 @@ describe('App', () => {
     });
   });
 
+  describe('Quiz engine', () => {
+    const mockWord = {
+      id: 1, traditional: '你好', simplified: '你好',
+      pinyin: 'nǐ hǎo', part_of_speech: 'phrase', definition: 'hello',
+    };
+
+    beforeEach(async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => [{ level: 1, lesson: 1 }],
+      });
+      render(<App />);
+      await userEvent.click(screen.getByRole('link', { name: 'Quiz' }));
+      await userEvent.click(screen.getByText(/Skip/));
+
+      // Select lesson and start session
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => [mockWord],
+      });
+      const checkbox = await screen.findByLabelText(/Lesson 1/);
+      await userEvent.click(checkbox);
+      await userEvent.click(screen.getByRole('button', { name: 'Start Session' }));
+    });
+
+    it('shows a question card after session starts', async () => {
+      expect(await screen.findByText(/What does this mean|How do you write/)).toBeInTheDocument();
+    });
+
+    it('shows Reveal Answer button on question phase', async () => {
+      expect(await screen.findByRole('button', { name: 'Reveal Answer' })).toBeInTheDocument();
+    });
+
+    it('shows Correct and Incorrect buttons after revealing', async () => {
+      await screen.findByRole('button', { name: 'Reveal Answer' });
+      await userEvent.click(screen.getByRole('button', { name: 'Reveal Answer' }));
+      expect(screen.getByRole('button', { name: /Correct/ })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Incorrect/ })).toBeInTheDocument();
+    });
+
+    it('shows pinyin when Show pinyin is clicked', async () => {
+      await screen.findByRole('button', { name: 'Show pinyin' });
+      await userEvent.click(screen.getByRole('button', { name: 'Show pinyin' }));
+      expect(screen.getByText('nǐ hǎo')).toBeInTheDocument();
+    });
+
+    it('shows hint notice when Hint is used and answer is revealed', async () => {
+      await screen.findByRole('button', { name: 'Hint (pinyin)' });
+      await userEvent.click(screen.getByRole('button', { name: 'Hint (pinyin)' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Reveal Answer' }));
+      expect(screen.getByText('Hint was used — counted as incorrect')).toBeInTheDocument();
+    });
+  });
+
   describe('Upload page auth gate', () => {
     beforeEach(async () => {
       render(<App />);
@@ -103,6 +158,7 @@ describe('App', () => {
 
     it('shows error message for wrong password', async () => {
       global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
         json: async () => ({ authenticated: false }),
       });
 
@@ -114,6 +170,7 @@ describe('App', () => {
 
     it('unlocks upload on correct password', async () => {
       global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
         json: async () => ({ authenticated: true }),
       });
 

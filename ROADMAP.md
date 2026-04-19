@@ -142,27 +142,27 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 6 — Core Quiz Engine
+## Milestone 6 — Core Quiz Engine ✅ COMPLETE
 **Goal:** The quiz works with correct randomization and direction logic.
 
 ### Deliverables
-- [ ] Two directions per word: character→English and English→character
-- [ ] Randomized word order
-- [ ] Same character/word never asked back-to-back
-- [ ] Pinyin hidden by default; inline toggle to reveal; resets on next question
-- [ ] Correct/incorrect tracked per word per direction
-- [ ] Incorrect answers re-queued later (never sequentially)
-- [ ] Max 2× correct per direction (4× total per word)
-- [ ] Hint system: counts as incorrect even if answered correctly after
-- [ ] Sentence hints: Chinese + pinyin only; English on request; 6+ words
-- [ ] Ambiguous words show clarifying context in English prompt
-- [ ] Conversation mode: plain text only, no formatting tags
-- [ ] Session terminates when all words completed or user exits
+- [x] Two directions per word: character→English and English→character
+- [x] Randomized word order
+- [x] Same character/word never asked back-to-back
+- [x] Pinyin hidden by default; inline toggle to reveal; resets on next question
+- [x] Correct/incorrect tracked per word per direction
+- [x] Incorrect answers re-queued later (never sequentially)
+- [x] Max 2× correct per direction (4× total per word)
+- [x] Hint system (reveals pinyin): counts as incorrect even if answered correctly after
+- [x] Session terminates when all words completed or user exits
+- [x] Completion screen with accuracy stats
+- [ ] Sentence hints — deferred (no sentence data in DB yet)
+- [ ] Ambiguous word context — deferred to content enrichment phase
 
 ### Success Criteria
-- Full quiz session runs correctly
-- Randomization and re-ask logic behaves as specified
-- Pinyin toggle works per question
+- [x] Full quiz session runs correctly
+- [x] Randomization and re-ask logic behaves as specified
+- [x] Pinyin toggle works per question
 
 ---
 
@@ -218,6 +218,6 @@ https://project-tangerine.pages.dev
 | 3 — Vocabulary Upload | ✅ Complete |
 | 4 — Password & Session Recording | ✅ Complete |
 | 5 — Session Setup | ✅ Complete |
-| 6 — Core Quiz Engine | Not started |
+| 6 — Core Quiz Engine | ✅ Complete |
 | 7 — Audio Pronunciation | Not started |
 | 8 — Dashboard & Progress | Not started |

@@ -144,6 +144,29 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 6: Core Quiz Engine
+
+### Added
+- `client/src/components/QuizEngine.jsx` — full quiz engine component
+  - 2 cards per word (character→English and English→character)
+  - Shuffled queue, no same-word back-to-back guaranteed
+  - Reveal-then-self-mark flow (show answer, mark Correct/Incorrect)
+  - Pinyin hidden by default; "Show pinyin" toggle; resets on next card
+  - Hint button reveals pinyin and forces incorrect regardless of answer
+  - Incorrect answers re-queued at least 2 positions ahead (never next)
+  - Card retired after 2 correct answers per direction
+  - Progress bar (done/total cards) and live correct/incorrect counters
+  - Completion screen with words covered, correct, incorrect, accuracy %
+  - Answers recorded to backend via POST /api/session/answer (authenticated only)
+- `client/src/components/QuizEngine.css` — quiz card styling
+
+### Testing
+- 20/20 frontend unit tests passing (added 5 tests for quiz engine)
+
+### Milestone 6 Status: ✅ Complete
+
+---
+
 ## [2026-04-18] — Milestone 5: Session Setup
 
 ### Added

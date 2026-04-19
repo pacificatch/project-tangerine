@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PasswordPrompt from '../components/PasswordPrompt';
 import SessionSetup from '../components/SessionSetup';
+import QuizEngine from '../components/QuizEngine';
 import './Quiz.css';
 
 function Quiz() {
@@ -61,19 +62,12 @@ function Quiz() {
           )}
 
           {quizState === 'active' && (
-            <div className="quiz-active">
-              <div className="quiz-active-header">
-                <span className="quiz-active-meta">
-                  {vocabulary.length} words &mdash;{' '}
-                  {selectedPairs.map(p => `L${p.level} Lesson ${p.lesson}`).join(', ')}
-                  {sessionId && <span className="session-id-badge"> · Session #{sessionId}</span>}
-                </span>
-                <button className="btn-end-session" onClick={handleEndSession}>
-                  End Session
-                </button>
-              </div>
-              <p className="quiz-placeholder">Quiz questions will appear here in Milestone 6.</p>
-            </div>
+            <QuizEngine
+              vocabulary={vocabulary}
+              sessionId={sessionId}
+              selectedPairs={selectedPairs}
+              onEnd={handleEndSession}
+            />
           )}
         </>
       )}

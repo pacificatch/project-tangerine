@@ -192,6 +192,38 @@ None — no application logic in Milestone 0.
 
 ---
 
+## Milestone 6 — Core Quiz Engine
+
+### Manual Tests
+| Test | Method | Result |
+|------|--------|--------|
+| Question card appears after starting session | Start session with 1 lesson | 🔲 Pending user test |
+| Character→English direction shows Chinese character | Visual check | 🔲 Pending user test |
+| English→Character direction shows English definition | Visual check | 🔲 Pending user test |
+| Pinyin hidden by default | Visual check | 🔲 Pending user test |
+| Show pinyin button reveals pinyin | Click button | 🔲 Pending user test |
+| Pinyin resets to hidden on next question | Advance to next card | 🔲 Pending user test |
+| Hint reveals pinyin and disables hint button | Click Hint | 🔲 Pending user test |
+| Hint notice shown on revealed answer | Click Hint then Reveal | 🔲 Pending user test |
+| Correct advances to next card | Click Reveal → Correct | 🔲 Pending user test |
+| Incorrect re-queues and advances | Click Reveal → Incorrect | 🔲 Pending user test |
+| Progress bar fills as cards are completed | Complete several cards | 🔲 Pending user test |
+| Completion screen shown when all done | Finish all cards | 🔲 Pending user test |
+| End Session returns to lesson selector | Click End Session | 🔲 Pending user test |
+
+### Automated Tests
+| Test | Framework | Status |
+|------|-----------|--------|
+| Question card appears after session starts | React Testing Library | ✅ Pass |
+| Reveal Answer button shown in question phase | React Testing Library | ✅ Pass |
+| Correct and Incorrect buttons shown after reveal | React Testing Library | ✅ Pass |
+| Show pinyin reveals pinyin text | React Testing Library | ✅ Pass |
+| Hint notice shown when hint used before reveal | React Testing Library | ✅ Pass |
+
+**Frontend result: 20/20 tests passed** — `client/src/test/App.test.jsx`
+
+---
+
 ## Legend
 | Symbol | Meaning |
 |--------|---------|
