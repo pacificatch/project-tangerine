@@ -14,16 +14,16 @@ function App() {
             <span className="logo-text">Tangerine</span>
           </div>
           <nav className="nav">
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Dashboard</NavLink>
-            <NavLink to="/quiz" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Quiz</NavLink>
+            <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Quiz</NavLink>
+            <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Dashboard</NavLink>
             <NavLink to="/upload" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Upload</NavLink>
           </nav>
         </header>
 
         <main className="main">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/" element={<Quiz />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/upload" element={<Upload />} />
           </Routes>
         </main>

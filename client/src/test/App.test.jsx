@@ -11,20 +11,18 @@ describe('App', () => {
 
   it('renders all navigation links', () => {
     render(<App />);
-    expect(screen.getByRole('link', { name: 'Dashboard' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Quiz' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Dashboard' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Upload' })).toBeInTheDocument();
   });
 
-  it('shows Dashboard page by default', () => {
+  it('shows Quiz page by default', () => {
     render(<App />);
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('Loading stats…')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to Tangerine')).toBeInTheDocument();
   });
 
-  it('shows password prompt when navigating to Quiz page', async () => {
+  it('shows password prompt on the default Quiz page', async () => {
     render(<App />);
-    await userEvent.click(screen.getByRole('link', { name: 'Quiz' }));
     expect(screen.getByText('Welcome to Tangerine')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Enter password')).toBeInTheDocument();
     expect(screen.getByText(/Skip/)).toBeInTheDocument();
@@ -32,7 +30,6 @@ describe('App', () => {
 
   it('shows guest banner when skipping password', async () => {
     render(<App />);
-    await userEvent.click(screen.getByRole('link', { name: 'Quiz' }));
     await userEvent.click(screen.getByText(/Skip/));
     expect(screen.getByText(/Guest mode — answers are not being recorded/)).toBeInTheDocument();
   });
