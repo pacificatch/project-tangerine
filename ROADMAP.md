@@ -166,16 +166,16 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 7 — Audio Pronunciation
+## Milestone 7 — Audio Pronunciation ✅ COMPLETE
 **Goal:** Tap a button to hear the character pronounced in Mandarin.
 
 ### Deliverables
-- [ ] Audio button appears when answer is revealed
-- [ ] Web Speech API reads character aloud in Mandarin Chinese
-- [ ] Button works on desktop and mobile
+- [x] Audio button appears when answer is revealed
+- [x] Web Speech API reads character aloud in Mandarin Chinese (zh-TW)
+- [x] Button works on desktop and mobile
 
 ### Success Criteria
-- Tap the button → hear the Mandarin pronunciation
+- [x] Tap the button → hear the Mandarin pronunciation
 
 ---
 
@@ -219,5 +219,5 @@ https://project-tangerine.pages.dev
 | 4 — Password & Session Recording | ✅ Complete |
 | 5 — Session Setup | ✅ Complete |
 | 6 — Core Quiz Engine | ✅ Complete |
-| 7 — Audio Pronunciation | Not started |
+| 7 — Audio Pronunciation | ✅ Complete |
 | 8 — Dashboard & Progress | Not started |

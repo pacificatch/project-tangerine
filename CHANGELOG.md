@@ -144,6 +144,19 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 7: Audio Pronunciation
+
+### Added
+- `client/src/components/QuizEngine.jsx` — 🔊 Hear it button in revealed phase
+  - Uses Web Speech API (browser built-in, no API key needed)
+  - Language set to `zh-TW` (Traditional Chinese Mandarin)
+  - Rate set to 0.85 for clearer pronunciation
+  - Appears on every revealed answer regardless of direction
+
+### Milestone 7 Status: ✅ Complete
+
+---
+
 ## [2026-04-18] — Milestone 6: Core Quiz Engine
 
 ### Added

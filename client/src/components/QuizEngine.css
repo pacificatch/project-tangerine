@@ -317,6 +317,23 @@
   margin: 0 auto;
 }
 
+/* Audio button */
+.btn-audio {
+  background: #fff8f0;
+  border: 1px solid #d4905a;
+  color: #6b4c1e;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: center;
+}
+
+.btn-audio:hover {
+  background: #f5e6d0;
+}
+
 /* Action buttons */
 .quiz-actions {
   display: flex;

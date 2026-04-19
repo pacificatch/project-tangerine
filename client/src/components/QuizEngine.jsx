@@ -56,6 +56,16 @@ function requeue(queue, card) {
   queue.push(card);
 }
 
+// Speak Chinese text using Web Speech API
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'zh-TW';
+  utterance.rate = 0.85;
+  window.speechSynthesis.speak(utterance);
+}
+
 // Auto-check user's typed answer
 function checkAnswer(input, word, direction) {
   const clean = s => s.toLowerCase().trim();
@@ -320,6 +330,15 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
                 </>
               )}
             </div>
+
+            {/* Audio button — always speaks the Chinese character */}
+            <button
+              className="btn-audio"
+              onClick={() => speak(word.traditional)}
+              title="Hear Mandarin pronunciation"
+            >
+              🔊 Hear it
+            </button>
 
           </div>
         )}
