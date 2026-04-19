@@ -111,13 +111,15 @@ describe('App', () => {
       expect(await screen.findByText(/What does this mean|How do you write/)).toBeInTheDocument();
     });
 
-    it('shows Reveal Answer button on question phase', async () => {
-      expect(await screen.findByRole('button', { name: 'Reveal Answer' })).toBeInTheDocument();
+    it('shows answer input and Check button on question phase', async () => {
+      expect(await screen.findByPlaceholderText(/Type the/)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Check' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Skip/ })).toBeInTheDocument();
     });
 
-    it('shows Correct and Incorrect buttons after revealing', async () => {
-      await screen.findByRole('button', { name: 'Reveal Answer' });
-      await userEvent.click(screen.getByRole('button', { name: 'Reveal Answer' }));
+    it('shows Correct and Incorrect buttons after skipping', async () => {
+      await screen.findByRole('button', { name: /Skip/ });
+      await userEvent.click(screen.getByRole('button', { name: /Skip/ }));
       expect(screen.getByRole('button', { name: /Correct/ })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Incorrect/ })).toBeInTheDocument();
     });
@@ -128,10 +130,10 @@ describe('App', () => {
       expect(screen.getByText('nǐ hǎo')).toBeInTheDocument();
     });
 
-    it('shows hint notice when Hint is used and answer is revealed', async () => {
+    it('shows hint notice when Hint is used and answer is skipped', async () => {
       await screen.findByRole('button', { name: 'Hint (pinyin)' });
       await userEvent.click(screen.getByRole('button', { name: 'Hint (pinyin)' }));
-      await userEvent.click(screen.getByRole('button', { name: 'Reveal Answer' }));
+      await userEvent.click(screen.getByRole('button', { name: /Skip/ }));
       expect(screen.getByText('Hint was used — counted as incorrect')).toBeInTheDocument();
     });
   });

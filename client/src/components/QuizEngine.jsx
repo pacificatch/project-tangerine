@@ -22,7 +22,6 @@ function buildQueue(vocabulary) {
 
   const shuffled = shuffle(cards);
 
-  // Fix consecutive same-word pairs
   for (let i = 1; i < shuffled.length; i++) {
     if (shuffled[i].word.id === shuffled[i - 1].word.id) {
       for (let j = i + 1; j < shuffled.length; j++) {
@@ -37,7 +36,7 @@ function buildQueue(vocabulary) {
   return shuffled;
 }
 
-// Insert a card back into the queue at a valid position (not adjacent to same word, min 2 spots ahead)
+// Insert card back into queue at valid position (min 2 spots ahead, not adjacent to same word)
 function requeue(queue, card) {
   const minPos = Math.min(2, queue.length);
 
@@ -54,16 +53,34 @@ function requeue(queue, card) {
     }
   }
 
-  // Fallback: append to end
   queue.push(card);
+}
+
+// Auto-check user's typed answer
+function checkAnswer(input, word, direction) {
+  const clean = s => s.toLowerCase().trim();
+  const userClean = clean(input);
+  if (!userClean) return false;
+
+  if (direction === 'eng_to_char') {
+    // Accept traditional or simplified
+    return userClean === clean(word.traditional) || userClean === clean(word.simplified);
+  } else {
+    // Accept any part of the definition (split by ; or ,)
+    const parts = word.definition.split(/[;,]/).map(p => clean(p));
+    return parts.some(p => p === userClean);
+  }
 }
 
 function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
   const queueRef = useRef([]);
+  const inputRef = useRef(null);
   const [currentCard, setCurrentCard] = useState(null);
   const [phase, setPhase] = useState('question'); // 'question' | 'revealed' | 'done'
   const [showPinyin, setShowPinyin] = useState(false);
   const [hintUsed, setHintUsed] = useState(false);
+  const [userInput, setUserInput] = useState('');
+  const [autoResult, setAutoResult] = useState(null); // null | true | false
   const [totalCards, setTotalCards] = useState(0);
   const [doneCount, setDoneCount] = useState(0);
   const [sessionStats, setSessionStats] = useState({ correct: 0, incorrect: 0 });
@@ -75,6 +92,13 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
     showNext(queue);
   }, []);
 
+  // Auto-focus input on each new question
+  useEffect(() => {
+    if (phase === 'question' && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [phase, currentCard]);
+
   function showNext(queue = queueRef.current) {
     if (queue.length === 0) {
       setPhase('done');
@@ -84,6 +108,8 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
     setPhase('question');
     setShowPinyin(false);
     setHintUsed(false);
+    setUserInput('');
+    setAutoResult(null);
   }
 
   function handleHint() {
@@ -91,15 +117,26 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
     setShowPinyin(true);
   }
 
-  function handleReveal() {
+  // User submits their typed answer
+  function handleCheck(e) {
+    e?.preventDefault();
+    if (!userInput.trim()) return;
+    const result = checkAnswer(userInput, currentCard.word, currentCard.direction);
+    setAutoResult(result);
     setPhase('revealed');
   }
 
-  async function handleAnswer(userSaysCorrect) {
-    const actuallyCorrect = userSaysCorrect && !hintUsed;
+  // User skips typing and just reveals the answer
+  function handleReveal() {
+    setAutoResult(null);
+    setPhase('revealed');
+  }
+
+  // Process the final result (auto or overridden)
+  async function processResult(isCorrect) {
+    const actuallyCorrect = isCorrect && !hintUsed;
     const card = queueRef.current.shift();
 
-    // Record to backend (fire-and-forget)
     if (sessionId) {
       fetch(`${WORKER_URL}/api/session/answer`, {
         method: 'POST',
@@ -112,22 +149,18 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
           hintUsed,
           attemptNumber: card.attemptNumber,
         }),
-      }).catch(() => {}); // silent fail — don't block the quiz
+      }).catch(() => {});
     }
 
     if (actuallyCorrect) {
       const updatedCard = { ...card, correctCount: card.correctCount + 1 };
       setSessionStats(s => ({ ...s, correct: s.correct + 1 }));
-
       if (updatedCard.correctCount >= 2) {
-        // Card fully mastered
         setDoneCount(d => d + 1);
       } else {
-        // One more correct needed — re-queue
         requeue(queueRef.current, updatedCard);
       }
     } else {
-      // Wrong or hint used — re-queue without resetting correctCount
       const updatedCard = { ...card, attemptNumber: card.attemptNumber + 1 };
       requeue(queueRef.current, updatedCard);
       setSessionStats(s => ({ ...s, incorrect: s.incorrect + 1 }));
@@ -173,12 +206,12 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
   const { word, direction } = currentCard;
   const isCharToEng = direction === 'char_to_eng';
   const progress = totalCards > 0 ? Math.round((doneCount / totalCards) * 100) : 0;
-  const remaining = queueRef.current.length; // cards still in queue (not counting current)
+  const remaining = queueRef.current.length;
 
   return (
     <div className="quiz-engine">
 
-      {/* Header: meta + end session */}
+      {/* Header */}
       <div className="quiz-header">
         <span className="quiz-meta">
           {selectedPairs.map(p => `L${p.level} Lesson ${p.lesson}`).join(', ')}
@@ -216,7 +249,7 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
           )}
         </div>
 
-        {/* Pinyin row (question phase) */}
+        {/* Pinyin toggle (question phase only) */}
         {phase === 'question' && (
           <div className="quiz-pinyin-row">
             {showPinyin ? (
@@ -229,59 +262,125 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
           </div>
         )}
 
+        {/* Answer input (question phase) */}
+        {phase === 'question' && (
+          <form className="quiz-input-form" onSubmit={handleCheck}>
+            <input
+              ref={inputRef}
+              type="text"
+              className="quiz-input"
+              placeholder={isCharToEng ? 'Type the English meaning…' : 'Type the Chinese character…'}
+              value={userInput}
+              onChange={e => setUserInput(e.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+            />
+            <div className="quiz-input-actions">
+              <button
+                type="submit"
+                className="btn-reveal"
+                disabled={!userInput.trim()}
+              >
+                Check
+              </button>
+              <button
+                type="button"
+                className="btn-skip-input"
+                onClick={handleReveal}
+              >
+                Skip — just show answer
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Hint button (question phase) */}
+        {phase === 'question' && (
+          <div className="quiz-hint-row">
+            <button
+              className="btn-hint"
+              onClick={handleHint}
+              disabled={hintUsed}
+            >
+              {hintUsed ? 'Hint shown' : 'Hint (pinyin)'}
+            </button>
+          </div>
+        )}
+
         {/* Revealed answer */}
         {phase === 'revealed' && (
           <div className="quiz-answer">
-            {isCharToEng ? (
-              <>
-                <div className="quiz-answer-pinyin">{word.pinyin}</div>
-                <div className="quiz-answer-definition">
-                  {word.part_of_speech && (
-                    <span className="quiz-pos">{word.part_of_speech} — </span>
-                  )}
-                  {word.definition}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="quiz-answer-character">{word.traditional}</div>
-                <div className="quiz-answer-pinyin">{word.pinyin}</div>
-              </>
+
+            {/* What the user typed */}
+            {userInput.trim() && (
+              <div className={`quiz-user-answer ${autoResult === true ? 'correct' : autoResult === false ? 'incorrect' : ''}`}>
+                <span className="quiz-user-label">Your answer:</span>
+                <span className="quiz-user-text">{userInput}</span>
+                {autoResult === true && <span className="quiz-auto-badge correct">✓ Correct</span>}
+                {autoResult === false && <span className="quiz-auto-badge incorrect">✗ Incorrect</span>}
+              </div>
             )}
+
+            {/* Correct answer */}
+            <div className="quiz-correct-answer">
+              <span className="quiz-correct-label">Correct answer:</span>
+              {isCharToEng ? (
+                <>
+                  <div className="quiz-answer-pinyin">{word.pinyin}</div>
+                  <div className="quiz-answer-definition">
+                    {word.part_of_speech && (
+                      <span className="quiz-pos">{word.part_of_speech} — </span>
+                    )}
+                    {word.definition}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="quiz-answer-character">{word.traditional}</div>
+                  <div className="quiz-answer-pinyin">{word.pinyin}</div>
+                </>
+              )}
+            </div>
+
             {hintUsed && (
               <div className="quiz-hint-notice">Hint was used — counted as incorrect</div>
             )}
           </div>
         )}
 
-        {/* Action buttons */}
-        <div className="quiz-actions">
-          {phase === 'question' && (
-            <>
-              <button
-                className="btn-hint"
-                onClick={handleHint}
-                disabled={hintUsed}
-              >
-                {hintUsed ? 'Hint shown' : 'Hint (pinyin)'}
-              </button>
-              <button className="btn-reveal" onClick={handleReveal}>
-                Reveal Answer
-              </button>
-            </>
-          )}
-
-          {phase === 'revealed' && (
-            <>
-              <button className="btn-incorrect" onClick={() => handleAnswer(false)}>
-                ✗ &nbsp;Incorrect
-              </button>
-              <button className="btn-correct" onClick={() => handleAnswer(true)}>
-                ✓ &nbsp;Correct
-              </button>
-            </>
-          )}
-        </div>
+        {/* Action buttons (revealed phase) */}
+        {phase === 'revealed' && (
+          <div className="quiz-actions">
+            {/* Auto-result flow: show Next + override */}
+            {autoResult !== null ? (
+              <div className="quiz-result-actions">
+                <button
+                  className={`btn-next ${autoResult ? 'correct' : 'incorrect'}`}
+                  onClick={() => processResult(autoResult)}
+                >
+                  Next →
+                </button>
+                <button
+                  className="btn-override"
+                  onClick={() => processResult(!autoResult)}
+                >
+                  Override — mark as {autoResult ? 'incorrect' : 'correct'}
+                </button>
+              </div>
+            ) : (
+              /* Manual flow (user skipped typing) */
+              <>
+                <button className="btn-incorrect" onClick={() => processResult(false)}>
+                  ✗ &nbsp;Incorrect
+                </button>
+                <button className="btn-correct" onClick={() => processResult(true)}>
+                  ✓ &nbsp;Correct
+                </button>
+              </>
+            )}
+          </div>
+        )}
 
       </div>
 

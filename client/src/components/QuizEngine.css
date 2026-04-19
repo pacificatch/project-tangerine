@@ -142,6 +142,58 @@
   background: #fff8f0;
 }
 
+/* Answer input */
+.quiz-input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.quiz-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 2px solid #d4905a;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  color: #4a2c0a;
+  background: #fff;
+  font-family: 'Ma Shan Zheng', 'KaiTi', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.quiz-input:focus {
+  outline: none;
+  border-color: #e07b20;
+}
+
+.quiz-input-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-skip-input {
+  background: none;
+  border: none;
+  color: #8c6030;
+  font-size: 0.82rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.btn-skip-input:hover {
+  color: #4a2c0a;
+}
+
+/* Hint row */
+.quiz-hint-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
 /* Revealed answer */
 .quiz-answer {
   text-align: center;
@@ -150,6 +202,93 @@
   gap: 0.4rem;
   animation: fadeIn 0.2s ease;
 }
+
+/* User's typed answer */
+.quiz-user-answer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: #f5f5f5;
+  font-size: 0.95rem;
+}
+
+.quiz-user-answer.correct { background: #f0faf0; }
+.quiz-user-answer.incorrect { background: #fff0f0; }
+
+.quiz-user-label {
+  color: #8c6030;
+  font-size: 0.82rem;
+}
+
+.quiz-user-text {
+  font-family: 'Ma Shan Zheng', 'KaiTi', sans-serif;
+  font-size: 1.05rem;
+  color: #4a2c0a;
+}
+
+.quiz-auto-badge {
+  font-size: 0.82rem;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.quiz-auto-badge.correct { color: #4a7c3f; }
+.quiz-auto-badge.incorrect { color: #c0392b; }
+
+/* Correct answer section */
+.quiz-correct-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.quiz-correct-label {
+  font-size: 0.78rem;
+  color: #8c6030;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Result actions */
+.quiz-result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.btn-next {
+  padding: 0.65rem 2.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: #fff;
+}
+
+.btn-next.correct { background: #4a7c3f; }
+.btn-next.correct:hover { background: #3a6030; }
+.btn-next.incorrect { background: #c0392b; }
+.btn-next.incorrect:hover { background: #922b21; }
+
+.btn-override {
+  background: none;
+  border: none;
+  color: #8c6030;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.btn-override:hover { color: #4a2c0a; }
 
 .quiz-answer-character {
   font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', cursive;
