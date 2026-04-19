@@ -18,7 +18,8 @@ describe('App', () => {
 
   it('shows Dashboard page by default', () => {
     render(<App />);
-    expect(screen.getByText('Your progress and stats will appear here.')).toBeInTheDocument();
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Loading stats…')).toBeInTheDocument();
   });
 
   it('shows password prompt when navigating to Quiz page', async () => {

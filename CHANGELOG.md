@@ -144,6 +144,31 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-18] — Milestone 8: Dashboard & Progress Tracking
+
+### Added
+- `client/src/pages/Dashboard.jsx` — full dashboard with live stats
+  - 4 stat cards: words in library, sessions completed, day streak, lifetime accuracy
+  - Accuracy by lesson table with visual progress bars
+  - Most missed characters (top 5) with character, pinyin, definition, miss count
+  - Recent sessions table (last 5) with date, lessons, answers, accuracy
+  - Empty state when no sessions completed yet
+- `client/src/pages/Dashboard.css` — dashboard styling
+- `worker/src/index.js` — expanded `GET /api/dashboard` endpoint
+  - Overall accuracy stats
+  - Streak calculation from session dates
+  - Most missed characters (JOIN with vocabulary)
+  - Accuracy per lesson (GROUP BY level, lesson)
+  - Recent sessions with answer counts
+
+### Testing
+- 14/14 Worker tests passing
+- 20/20 Frontend tests passing
+
+### Milestone 8 Status: ✅ Complete
+
+---
+
 ## [2026-04-18] — Milestone 7: Audio Pronunciation
 
 ### Added

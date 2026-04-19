@@ -1,0 +1,191 @@
+.dashboard h2 {
+  margin-bottom: 1.25rem;
+}
+
+.dash-loading,
+.dash-error {
+  color: #6b4c1e;
+  font-size: 0.95rem;
+}
+
+.dash-error { color: #922b21; }
+
+/* Stat cards */
+.dash-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.dash-card {
+  background: #fff;
+  border: 1px solid #e8c9a0;
+  border-radius: 10px;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.dash-card-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e07b20;
+}
+
+.dash-card-label {
+  font-size: 0.78rem;
+  color: #8c6030;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dash-meta {
+  font-size: 0.82rem;
+  color: #8c6030;
+  margin-bottom: 1.75rem;
+}
+
+/* Sections */
+.dash-section {
+  margin-bottom: 2rem;
+}
+
+.dash-section h3 {
+  font-size: 1rem;
+  color: #4a2c0a;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #e8c9a0;
+  padding-bottom: 0.4rem;
+}
+
+/* Tables */
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.dash-table th {
+  background: #f5e6d0;
+  color: #4a2c0a;
+  padding: 0.45rem 0.75rem;
+  text-align: left;
+  border-bottom: 2px solid #d4905a;
+  font-weight: bold;
+}
+
+.dash-table td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid #f0dfc0;
+  color: #4a2c0a;
+}
+
+.dash-table tr:hover td {
+  background: #fff8f0;
+}
+
+/* Accuracy bar */
+.dash-accuracy-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dash-accuracy-bar > div {
+  height: 8px;
+  background: #f0dfc0;
+  border-radius: 4px;
+  width: 80px;
+  position: relative;
+}
+
+.dash-accuracy-fill {
+  height: 100%;
+  background: #4a7c3f;
+  border-radius: 4px;
+}
+
+.dash-accuracy-bar > span {
+  font-size: 0.82rem;
+  color: #4a2c0a;
+  white-space: nowrap;
+}
+
+/* Most missed */
+.dash-missed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dash-missed-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid #e8c9a0;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+}
+
+.dash-missed-char {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.5rem;
+  color: #4a2c0a;
+  min-width: 2.5rem;
+}
+
+.dash-missed-pinyin {
+  font-size: 0.85rem;
+  color: #6b4c1e;
+  min-width: 5rem;
+}
+
+.dash-missed-def {
+  font-size: 0.85rem;
+  color: #4a2c0a;
+  flex: 1;
+}
+
+.dash-missed-count {
+  font-size: 0.82rem;
+  color: #c0392b;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Empty state */
+.dash-empty {
+  text-align: center;
+  color: #8c6030;
+  font-size: 0.95rem;
+  padding: 2rem;
+  background: #fff8f0;
+  border: 1px dashed #d4905a;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .dash-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dash-missed-pinyin {
+    display: none;
+  }
+
+  .dash-table {
+    font-size: 0.8rem;
+  }
+
+  .dash-table th,
+  .dash-table td {
+    padding: 0.35rem 0.5rem;
+  }
+}

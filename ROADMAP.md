@@ -179,20 +179,20 @@ https://project-tangerine.pages.dev
 
 ---
 
-## Milestone 8 — Dashboard & Progress Tracking
+## Milestone 8 — Dashboard & Progress Tracking ✅ COMPLETE
 **Goal:** Landing page shows meaningful stats about learning progress.
 
 ### Deliverables
-- [ ] Total words learned
-- [ ] Accuracy rate per lesson (lifetime)
-- [ ] Accuracy rate per session
-- [ ] Current streak (days studied in a row)
-- [ ] Most missed characters
-- [ ] Last session date
-- [ ] Session history view
+- [x] Total words in library
+- [x] Accuracy rate per lesson (lifetime)
+- [x] Accuracy rate per session
+- [x] Current streak (days studied in a row)
+- [x] Most missed characters (top 5)
+- [x] Last session date
+- [x] Recent session history (last 5)
 
 ### Success Criteria
-- After completing a quiz session, stats update on the dashboard
+- [x] After completing a quiz session, stats update on the dashboard
 
 ---
 
@@ -220,4 +220,4 @@ https://project-tangerine.pages.dev
 | 5 — Session Setup | ✅ Complete |
 | 6 — Core Quiz Engine | ✅ Complete |
 | 7 — Audio Pronunciation | ✅ Complete |
-| 8 — Dashboard & Progress | Not started |
+| 8 — Dashboard & Progress | ✅ Complete |

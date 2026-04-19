@@ -148,13 +148,29 @@ describe('Worker API', () => {
   });
 
   describe('GET /api/dashboard', () => {
-    it('returns dashboard stats', async () => {
+    it('returns comprehensive dashboard stats', async () => {
+      env.tangerine_db.prepare = vi.fn().mockReturnValue({
+        first: vi.fn().mockResolvedValue({ count: 0, correct: 0, total: 0, started_at: null }),
+        all: vi.fn().mockResolvedValue({ results: [] }),
+        bind: vi.fn().mockReturnValue({
+          all: vi.fn().mockResolvedValue({ results: [] }),
+          run: vi.fn().mockResolvedValue({ meta: { last_row_id: 1 } }),
+          first: vi.fn().mockResolvedValue(null),
+        }),
+        run: vi.fn().mockResolvedValue({}),
+      });
+
       const response = await worker.fetch(makeRequest('/api/dashboard'), env);
       const data = await response.json();
       expect(response.status).toBe(200);
       expect(data).toHaveProperty('totalWords');
       expect(data).toHaveProperty('totalSessions');
       expect(data).toHaveProperty('lastSession');
+      expect(data).toHaveProperty('accuracy');
+      expect(data).toHaveProperty('streak');
+      expect(data).toHaveProperty('mostMissed');
+      expect(data).toHaveProperty('lessonAccuracy');
+      expect(data).toHaveProperty('recentSessions');
     });
   });
 

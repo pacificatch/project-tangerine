@@ -148,22 +148,82 @@ export default {
 
     // GET /api/dashboard
     if (pathname === '/api/dashboard' && request.method === 'GET') {
-      const totalWords = await env.tangerine_db
-        .prepare('SELECT COUNT(*) as count FROM vocabulary')
-        .first();
+      const [totalWords, totalSessions, lastSession, accuracyStats, sessionDates] =
+        await Promise.all([
+          env.tangerine_db.prepare('SELECT COUNT(*) as count FROM vocabulary').first(),
+          env.tangerine_db.prepare('SELECT COUNT(*) as count FROM sessions').first(),
+          env.tangerine_db.prepare('SELECT started_at FROM sessions ORDER BY started_at DESC LIMIT 1').first(),
+          env.tangerine_db.prepare('SELECT SUM(is_correct) as correct, COUNT(*) as total FROM answers').first(),
+          env.tangerine_db.prepare("SELECT DISTINCT date(started_at) as date FROM sessions ORDER BY date DESC").all(),
+        ]);
 
-      const totalSessions = await env.tangerine_db
-        .prepare('SELECT COUNT(*) as count FROM sessions')
-        .first();
+      const { results: mostMissed } = await env.tangerine_db.prepare(`
+        SELECT v.traditional, v.pinyin, v.definition, COUNT(*) as incorrect_count
+        FROM answers a
+        JOIN vocabulary v ON a.vocabulary_id = v.id
+        WHERE a.is_correct = 0
+        GROUP BY a.vocabulary_id
+        ORDER BY incorrect_count DESC
+        LIMIT 5
+      `).all();
 
-      const lastSession = await env.tangerine_db
-        .prepare('SELECT started_at FROM sessions ORDER BY started_at DESC LIMIT 1')
-        .first();
+      const { results: lessonAccuracy } = await env.tangerine_db.prepare(`
+        SELECT v.level, v.lesson,
+          SUM(a.is_correct) as correct,
+          COUNT(*) as total
+        FROM answers a
+        JOIN vocabulary v ON a.vocabulary_id = v.id
+        GROUP BY v.level, v.lesson
+        ORDER BY v.level, v.lesson
+      `).all();
+
+      const { results: recentSessions } = await env.tangerine_db.prepare(`
+        SELECT s.id, s.started_at, s.levels, s.lessons,
+          COUNT(a.id) as total_answers,
+          SUM(a.is_correct) as correct_answers
+        FROM sessions s
+        LEFT JOIN answers a ON a.session_id = s.id
+        GROUP BY s.id
+        ORDER BY s.started_at DESC
+        LIMIT 5
+      `).all();
+
+      // Calculate streak from session dates
+      const dates = sessionDates.results.map(r => r.date);
+      let streak = 0;
+      if (dates.length > 0) {
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        if (dates[0] === today || dates[0] === yesterday) {
+          streak = 1;
+          for (let i = 1; i < dates.length; i++) {
+            const curr = new Date(dates[i - 1]);
+            const prev = new Date(dates[i]);
+            if (Math.round((curr - prev) / 86400000) === 1) {
+              streak++;
+            } else {
+              break;
+            }
+          }
+        }
+      }
+
+      const correct = accuracyStats?.correct ?? 0;
+      const total = accuracyStats?.total ?? 0;
 
       return json({
         totalWords: totalWords?.count ?? 0,
         totalSessions: totalSessions?.count ?? 0,
         lastSession: lastSession?.started_at ?? null,
+        accuracy: {
+          correct,
+          total,
+          rate: total > 0 ? Math.round((correct / total) * 100) : 0,
+        },
+        streak,
+        mostMissed,
+        lessonAccuracy,
+        recentSessions,
       });
     }
 
