@@ -9,7 +9,7 @@ A web-based Traditional Chinese character memorization app called **Tangerine**.
 - **Frontend:** React (Vite) — hosted on Cloudflare Pages
 - **Backend:** Cloudflare Workers (replaces Node.js/Express)
 - **Database:** Cloudflare D1 (SQLite) — native to Cloudflare
-- **Font:** KaiTi via Google Fonts / CDN
+- **Font:** Noto Serif TC via Google Fonts
 - **Audio:** Web Speech API (browser built-in, free)
 - **Hosting:** Cloudflare (Pages + Workers + D1 — all in one)
 
@@ -56,16 +56,17 @@ A web-based Traditional Chinese character memorization app called **Tangerine**.
 - No API key required
 
 ## Vocabulary Scope
-- Traditional characters only (Phase 1)
+- Traditional or Simplified characters — user selects character set at session setup
 - Draw from all levels/lessons up to and including user's current level/lesson
 - Ask user permission before using vocabulary beyond current scope
 - User selects specific level(s) and/or lesson(s) each session
 
 ## Session Flow
-1. Show dashboard with stats on landing
-2. Prompt: which level(s) and lesson(s) to drill today?
-3. Begin quiz
-4. User may terminate session at any time
+1. Quiz page is the landing page
+2. Password prompt → guest or authenticated mode
+3. Session setup: select character set (Traditional/Simplified), then level(s) and lesson(s)
+4. Begin quiz
+5. User may terminate session at any time
 
 ## Content Upload
 - App prompts user to upload file (CSV/Excel or .md)
@@ -110,7 +111,6 @@ wrangler deploy             # Deploy Worker to Cloudflare (must be run from work
 
 ## Future Features
 - AI-generated mnemonics via Claude API
-- Simplified character mode
 - Multi-user support + authentication
 - Stroke order animations
 - Study reminders / push notifications
@@ -118,6 +118,7 @@ wrangler deploy             # Deploy Worker to Cloudflare (must be run from work
 - Progress data export (CSV)
 - Upgraded audio (native speaker or TTS API)
 - PDF content upload
+- Sentence hints (requires sentence data in DB)
 
 ## Notes
 - Current user: single user only

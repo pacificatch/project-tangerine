@@ -9,7 +9,7 @@ A web-based app to help memorize Traditional Chinese characters sourced from the
 - **Frontend:** React (Vite)
 - **Backend:** Cloudflare Workers
 - **Database:** Cloudflare D1 (SQLite)
-- **Font:** KaiTi via Google Fonts / CDN
+- **Font:** Noto Serif TC via Google Fonts
 - **Audio:** Web Speech API (browser built-in, free)
 - **Hosting:** Cloudflare (Pages, Workers, D1 — all in one)
 
@@ -47,7 +47,7 @@ A web-based app to help memorize Traditional Chinese characters sourced from the
 - Free, no API required
 
 ### Vocabulary Scope
-- Traditional characters only (Phase 1)
+- Traditional or Simplified characters — user selects character set at session setup
 - Draw from all levels and lessons up to and including current level/lesson
 - Ask user permission before using vocabulary beyond current scope
 - User selects specific level(s) and/or lesson(s) per session
@@ -92,15 +92,15 @@ A web-based app to help memorize Traditional Chinese characters sourced from the
 - Last session date
 
 ## Display
-- KaiTi font for all Chinese characters
+- Noto Serif TC font for all Chinese characters
 - Responsive design: works on both desktop and mobile
+- Quiz card layout: fixed-width card with footnote panel alongside (source, session info, how it works)
 
 ## Deployment
 - Hosted entirely on Cloudflare (frontend, backend, database)
 
 ## Future Features
 - AI-generated vivid visual mnemonics using radical/component breakdown (Claude API)
-- Simplified character mode (switchable)
 - Multi-user support with individual accounts, login/signup, and separate progress tracking
 - User authentication system
 - Stroke order animations
@@ -109,6 +109,7 @@ A web-based app to help memorize Traditional Chinese characters sourced from the
 - Progress data export (CSV)
 - Upgraded audio (native speaker recordings or TTS API)
 - PDF content upload support
+- Sentence hints (requires sentence data in DB)
 
 ## Getting Started
 

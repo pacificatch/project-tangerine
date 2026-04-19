@@ -5,6 +5,31 @@ Format: Date · Milestone · Description
 
 ---
 
+## [2026-04-19] — UI Polish & Quiz Improvements
+
+### Added
+- Traditional/Simplified character set toggle on session setup screen
+  - Defaults to Traditional; user can switch before starting a session
+  - Selected character set passed through to quiz engine and audio
+- Quiz footnote panel displayed beside the quiz card (right column)
+  - Source: Integrated Chinese, 4th Edition
+  - Session breakdown: lesson name and character count per lesson
+  - How it works: bulleted explanation of quiz logic
+- Part-of-speech abbreviations expanded to full English labels in English→Chinese questions
+  - e.g. `pr` → `pronoun`, `n` → `noun`, `vo` → `verb-object`, etc.
+  - Full lookup map covering all 27 distinct values in the database
+
+### Changed
+- App footer text updated to "Tangerine - Chinese Character Learning"
+- Quiz header now shows the level/lesson of the **current card** (e.g. "Level 1 Lesson 2") instead of listing all selected lessons
+- Correct/incorrect counters styled larger and bolder
+- Quiz card layout: fixed-width left column (460px) with footnote panel to the right
+
+### Testing
+- 20/20 frontend tests passing
+
+---
+
 ## [2026-04-18] — Milestone 0: Static Landing Page
 
 ### Added
