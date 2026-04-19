@@ -9,6 +9,7 @@ function SessionSetup({ isAuthenticated, onSessionStart }) {
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState(null);
+  const [characterSet, setCharacterSet] = useState('traditional'); // 'traditional' | 'simplified'
 
   useEffect(() => {
     fetch(`${WORKER_URL}/api/lessons`)
@@ -92,7 +93,7 @@ function SessionSetup({ isAuthenticated, onSessionStart }) {
         sessionId = data.sessionId;
       }
 
-      onSessionStart({ vocabulary, sessionId, pairs });
+      onSessionStart({ vocabulary, sessionId, pairs, characterSet });
     } catch {
       setError('Failed to start session. Please try again.');
       setStarting(false);
@@ -117,6 +118,25 @@ function SessionSetup({ isAuthenticated, onSessionStart }) {
   return (
     <div className="session-setup">
       <h3>Choose Lessons to Practice</h3>
+
+      <div className="character-set-toggle">
+        <span className="character-set-label">Character set:</span>
+        <div className="character-set-buttons">
+          <button
+            className={`btn-char-set ${characterSet === 'traditional' ? 'active' : ''}`}
+            onClick={() => setCharacterSet('traditional')}
+          >
+            Traditional
+          </button>
+          <button
+            className={`btn-char-set ${characterSet === 'simplified' ? 'active' : ''}`}
+            onClick={() => setCharacterSet('simplified')}
+          >
+            Simplified
+          </button>
+        </div>
+      </div>
+
       <p className="session-subtitle">
         {isAuthenticated
           ? 'Your progress will be recorded.'

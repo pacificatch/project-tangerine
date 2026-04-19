@@ -30,7 +30,7 @@ function App() {
 
         <footer className="footer">
           <span className="chinese-sample">橘子</span>
-          <span>Tangerine — Traditional Chinese Learning</span>
+          <span>Tangerine - Chinese Character Learning</span>
         </footer>
       </div>
     </BrowserRouter>

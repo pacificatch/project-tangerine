@@ -12,6 +12,49 @@
   font-size: 1.1rem;
 }
 
+.character-set-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.character-set-label {
+  font-size: 0.88rem;
+  color: #4a2c0a;
+  font-weight: 600;
+}
+
+.character-set-buttons {
+  display: flex;
+  border: 1px solid #d4905a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.btn-char-set {
+  background: #fff;
+  border: none;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.85rem;
+  color: #8c6030;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-char-set:not(:last-child) {
+  border-right: 1px solid #d4905a;
+}
+
+.btn-char-set.active {
+  background: #e07b20;
+  color: #fff;
+}
+
+.btn-char-set:hover:not(.active) {
+  background: #fff3e6;
+}
+
 .session-subtitle {
   font-size: 0.88rem;
   color: #8c6030;

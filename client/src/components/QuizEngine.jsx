@@ -3,6 +3,37 @@ import './QuizEngine.css';
 
 const WORKER_URL = 'https://tangerine-worker.pacificatch.workers.dev';
 
+const POS_LABELS = {
+  'adj':    'adjective',
+  'adj/adv':'adjective/adverb',
+  'adv':    'adverb',
+  'av':     'auxiliary verb',
+  'conj':   'conjunction',
+  'interj': 'interjection',
+  'm':      'measure word',
+  'm/n':    'measure word/noun',
+  'mv':     'modal verb',
+  'n':      'noun',
+  'n+m':    'noun + measure word',
+  'n/v':    'noun/verb',
+  'n/vo':   'noun/verb-object',
+  'nu':     'numeral',
+  'p':      'particle',
+  'pn':     'proper noun',
+  'pr':     'pronoun',
+  'prefix': 'prefix',
+  'prep':   'preposition',
+  'qp':     'question particle',
+  'qpr':    'question pronoun',
+  't':      'time word',
+  'v':      'verb',
+  'v(o)':   'verb (optional object)',
+  'v/n':    'verb/noun',
+  'vc':     'verb + complement',
+  'vo':     'verb-object',
+  'vo/n':   'verb-object/noun',
+};
+
 // Fisher-Yates shuffle
 function shuffle(arr) {
   const a = [...arr];
@@ -82,7 +113,7 @@ function checkAnswer(input, word, direction) {
   }
 }
 
-function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
+function QuizEngine({ vocabulary, sessionId, selectedPairs, characterSet = 'traditional', onEnd }) {
   const queueRef = useRef([]);
   const inputRef = useRef(null);
   const [currentCard, setCurrentCard] = useState(null);
@@ -206,6 +237,7 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
 
   const { word, direction } = currentCard;
   const isCharToEng = direction === 'char_to_eng';
+  const displayChar = word[characterSet] || word.traditional;
   const progress = totalCards > 0 ? Math.round((doneCount / totalCards) * 100) : 0;
   const remaining = queueRef.current.length;
 
@@ -215,7 +247,7 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
       {/* Header */}
       <div className="quiz-header">
         <span className="quiz-meta">
-          {selectedPairs.map(p => `L${p.level} Lesson ${p.lesson}`).join(', ')}
+          Level {word.level} Lesson {word.lesson}
           {sessionId && <span className="quiz-session-badge"> · Session #{sessionId}</span>}
         </span>
         <button className="btn-end-session" onClick={onEnd}>End Session</button>
@@ -229,6 +261,12 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
         <span className="quiz-progress-label">{doneCount} / {totalCards} done</span>
       </div>
 
+      {/* Card + Footnote side by side */}
+      <div className="quiz-body">
+
+      {/* Left column: card + footer stats */}
+      <div className="quiz-card-column">
+
       {/* Card */}
       <div className="quiz-card">
 
@@ -239,13 +277,13 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
         {/* Question */}
         <div className="quiz-question">
           {isCharToEng ? (
-            <span className="quiz-character">{word.traditional}</span>
+            <span className="quiz-character">{displayChar}</span>
           ) : (
             <span className="quiz-english">
-              {word.part_of_speech && (
-                <span className="quiz-pos">{word.part_of_speech} — </span>
-              )}
               {word.definition}
+              {word.part_of_speech && (
+                <span className="quiz-pos"> ({POS_LABELS[word.part_of_speech] || word.part_of_speech})</span>
+              )}
             </span>
           )}
         </div>
@@ -325,7 +363,7 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
                 </>
               ) : (
                 <>
-                  <div className="quiz-answer-character">{word.traditional}</div>
+                  <div className="quiz-answer-character">{displayChar}</div>
                   <div className="quiz-answer-pinyin">{word.pinyin}</div>
                 </>
               )}
@@ -334,7 +372,7 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
             {/* Audio button — always speaks the Chinese character */}
             <button
               className="btn-audio"
-              onClick={() => speak(word.traditional)}
+              onClick={() => speak(displayChar)}
               title="Hear Mandarin pronunciation"
             >
               🔊 Hear it
@@ -378,12 +416,46 @@ function QuizEngine({ vocabulary, sessionId, selectedPairs, onEnd }) {
 
       </div>
 
-      {/* Footer stats */}
+      {/* Footer stats — under the card */}
       <div className="quiz-footer-stats">
         <span className="quiz-stat correct">✓ {sessionStats.correct}</span>
-        <span className="quiz-stat remaining">{remaining + 1} remaining</span>
+        <span className="quiz-stat remaining">{remaining + 1} {remaining + 1 === 1 ? 'card' : 'cards'} remaining</span>
         <span className="quiz-stat incorrect">✗ {sessionStats.incorrect}</span>
       </div>
+
+      </div>{/* end quiz-card-column */}
+
+      {/* Footnote — right column */}
+      <div className="quiz-footnote">
+        <div className="quiz-footnote-row">
+          <span className="quiz-footnote-label">Source:</span>
+          <span>Integrated Chinese, 4th Edition</span>
+        </div>
+        <div className="quiz-footnote-row">
+          <span className="quiz-footnote-label">Session:</span>
+          <ul className="quiz-footnote-lessons">
+            {selectedPairs.map(p => {
+              const count = vocabulary.filter(w => w.level === p.level && w.lesson === p.lesson).length;
+              return (
+                <li key={`${p.level}-${p.lesson}`}>
+                  Level {p.level}, Lesson {p.lesson}: {count} characters
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className="quiz-footnote-row">
+          <span className="quiz-footnote-label">How it works:</span>
+          <ul className="quiz-footnote-howto">
+            <li>Each character is drilled in both directions — Chinese to English and English to Chinese.</li>
+            <li>Answer correctly twice per direction to retire a card.</li>
+            <li>Incorrect answers are re-queued later.</li>
+            <li>"Remaining" counts cards still in queue plus the current card.</li>
+          </ul>
+        </div>
+      </div>
+
+      </div>{/* end quiz-body */}
 
     </div>
   );

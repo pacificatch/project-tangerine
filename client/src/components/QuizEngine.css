@@ -1,5 +1,18 @@
 .quiz-engine {
-  max-width: 620px;
+  max-width: 860px;
+}
+
+/* Card + footnote side by side */
+.quiz-body {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.quiz-card-column {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 460px;
 }
 
 /* Header */
@@ -71,7 +84,6 @@
   border: 1px solid #e8c9a0;
   border-radius: 12px;
   padding: 2rem 2rem 1.5rem;
-  margin-bottom: 1rem;
   min-height: 260px;
   display: flex;
   flex-direction: column;
@@ -406,17 +418,6 @@
   background: #fff0f0;
 }
 
-/* Footer stats */
-.quiz-footer-stats {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  padding: 0 0.25rem;
-}
-
-.quiz-stat.correct { color: #4a7c3f; }
-.quiz-stat.incorrect { color: #c0392b; }
-.quiz-stat.remaining { color: #8c6030; }
 
 /* Done screen */
 .quiz-done {
@@ -482,8 +483,82 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Footnote */
+.quiz-footnote {
+  padding: 1rem 1.25rem;
+  background: #fff8f0;
+  border: 1px solid #e8c9a0;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: #7a5030;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  align-self: flex-start;
+}
+
+/* Footer stats */
+.quiz-footer-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  padding: 0.5rem 0.25rem 0;
+}
+
+.quiz-stat.remaining {
+  font-size: 0.85rem;
+  align-self: center;
+}
+
+.quiz-stat.correct { color: #4a7c3f; font-weight: 700; }
+.quiz-stat.incorrect { color: #c0392b; font-weight: 700; }
+.quiz-stat.remaining { color: #8c6030; }
+
+.quiz-footnote-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.quiz-footnote-label {
+  font-weight: 600;
+  color: #4a2c0a;
+  white-space: nowrap;
+  min-width: 90px;
+}
+
+.quiz-footnote-lessons {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.quiz-footnote-lessons li {
+  margin: 0.1rem 0;
+}
+
+.quiz-footnote-howto {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+
+.quiz-footnote-howto li {
+  margin: 0.1rem 0;
+}
+
 /* Mobile */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
+  .quiz-body {
+    flex-direction: column;
+  }
+
+  .quiz-card-column {
+    flex: unset;
+    width: 100%;
+  }
+
   .quiz-card {
     padding: 1.5rem 1.25rem 1.25rem;
   }

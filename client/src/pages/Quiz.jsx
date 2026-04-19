@@ -10,6 +10,7 @@ function Quiz() {
   const [sessionId, setSessionId] = useState(null);
   const [vocabulary, setVocabulary] = useState([]);
   const [selectedPairs, setSelectedPairs] = useState([]);
+  const [characterSet, setCharacterSet] = useState('traditional');
 
   function handleAuthenticated() {
     setAuthState('authenticated');
@@ -19,10 +20,11 @@ function Quiz() {
     setAuthState('guest');
   }
 
-  function handleSessionStart({ vocabulary, sessionId, pairs }) {
+  function handleSessionStart({ vocabulary, sessionId, pairs, characterSet }) {
     setVocabulary(vocabulary);
     setSessionId(sessionId);
     setSelectedPairs(pairs);
+    setCharacterSet(characterSet);
     setQuizState('active');
   }
 
@@ -31,6 +33,7 @@ function Quiz() {
     setVocabulary([]);
     setSessionId(null);
     setSelectedPairs([]);
+    setCharacterSet('traditional');
   }
 
   return (
@@ -66,6 +69,7 @@ function Quiz() {
               vocabulary={vocabulary}
               sessionId={sessionId}
               selectedPairs={selectedPairs}
+              characterSet={characterSet}
               onEnd={handleEndSession}
             />
           )}

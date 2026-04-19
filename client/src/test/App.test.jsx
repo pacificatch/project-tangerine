@@ -43,6 +43,7 @@ describe('App', () => {
   it('renders footer with Chinese characters', () => {
     render(<App />);
     expect(screen.getByText('橘子')).toBeInTheDocument();
+    expect(screen.getByText('Tangerine - Chinese Character Learning')).toBeInTheDocument();
   });
 
   describe('Session setup', () => {
